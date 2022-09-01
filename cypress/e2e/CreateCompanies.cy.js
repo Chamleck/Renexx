@@ -1,6 +1,6 @@
 it("Тест логина",() => {
 
-    cy.visit ('https://emails-dev.alpha-pram.com/login');
+    cy.visit ('/');
 
     cy.get('[type="email"]').type('admin@gmail.com');
 
