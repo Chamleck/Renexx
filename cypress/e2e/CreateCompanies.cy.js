@@ -58,7 +58,7 @@ it("Тест создания 2 компании",() => {
 
     cy.get('div>input').last().type('nickolas.kolotkov@gmail.com');
 
-    cy.get('span:contains("Save")').click();
+    cy.get('span:contains("Save")',{ timeout: 100000 }).click();
 
     cy.get('p.text:contains("Campaign created")');
 
