@@ -38,12 +38,30 @@ it("Тест создания компании",() => {
     it("Удаление компании",() => {
 
      //удаление кампании
-    cy.get('span:nth-child(4)').click();
+     //
+    cy.get('span:contains("Test")').parents('tr').find('.icon.cursor-pointer').click();
 
     cy.get('span:contains("Delete")').click();
 
     cy.get('p.text:contains("Campaign deleted")');
 
     })
+
+    it("Деактивация/Активация",() => {
+
+        cy.get('span:contains("Campaign")')
+        //указываем родительский элемент для искомой кнопки
+        .parents ('tr')
+        //находим тег отвечающий за искомую кнопку
+        .find('.check')
+        
+        .click()
+
+        //cy.get('span:contains("Campaign")').find('.check').click()
+
+        
+        
+   
+       })
 
     
