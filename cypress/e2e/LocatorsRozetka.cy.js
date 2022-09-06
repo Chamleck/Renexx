@@ -88,4 +88,5 @@ it.skip("Примеры поиска элементов",() => {
     // нажимаем
     .click()
     //Тут ищем по названию блока горизонтал форм и внутри него ищем атрибут с значением имейл правда не понятно зачем тут тег нб кард
-    cy.contains('Horizontal form','nb-card').find([type="Email"])
+    cy.contains('Horizontal form','nb-card').find([type="Email"]);
+})

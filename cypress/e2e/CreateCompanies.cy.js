@@ -35,9 +35,6 @@ it("Тест создания 1 компании",() => {
     cy.get('p.text:contains("Campaign created")');
 
 })
-setTimeout(() => {
-    
-  }, 1000)
 
 it("Тест создания 2 компании",() => {
 
@@ -58,7 +55,7 @@ it("Тест создания 2 компании",() => {
 
     cy.get('div>input').last().type('nickolas.kolotkov@gmail.com');
 
-    cy.get('span:contains("Save")',{ timeout: 100000 }).click();
+    cy.get('span:contains("Save")').wait(4000).click();
 
     cy.get('p.text:contains("Campaign created")');
 
