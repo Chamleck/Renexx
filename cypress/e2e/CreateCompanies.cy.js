@@ -1,67 +1,61 @@
-it("Тест логина",() => {
+import login from "./logIn.cy";
+describe("createCompanies", function () {
+    beforeEach(() => {
+        cy.restoreLocalStorage();
+    })
+    it("login", login)
 
-    cy.visit ('/');
+    it("Тест создания 1 компании",() => {
+        cy.get('.navbar-item.has-dropdown').first().click();
 
-    cy.get('[type="email"]').type('admin@gmail.com');
+        cy.get('a:contains("Campaigns")').click();
 
-    cy.get('[type="password"]').type('vI3iT581Lrh&');
+        cy.get('span:contains("Create new campaign")').click();
 
-    cy.get('span:contains(" LOG IN ")').click();
+        cy.get('[placeholder="Campaign Name"]').type('Vlad Test');
 
-})
+        //Выбор нужного темплейта
+        cy.get('select').select('Template');
 
+        cy.get('button[type="submit"]').click();
 
-it("Тест создания 1 компании",() => {
+        cy.get('div>textarea').type('Testing description');
 
-    cy.get('.navbar-item.has-dropdown').first().click();
+        cy.get('div>input').last().type('chamlecks@gmail.com');
 
-    cy.get('a:contains("Campaigns")').click();
+        cy.get('span:contains("Save")').click();
 
-    cy.get('span:contains("Create new campaign")').click();
+        cy.get('p.text:contains("Campaign created")');
 
-    cy.get('[placeholder="Campaign Name"]').type('Test');
+    })
 
-    //Выбор нужного темплейта
-    cy.get('select').select('Template');
+    it("Тест создания 2 компании",() => {
 
-    cy.get('button[type="submit"]').click();
+        cy.get('.navbar-item.has-dropdown').first().click();
 
-    cy.get('div>textarea').type('Testing description');
+        cy.get('a:contains("Campaigns")').click();
 
-    cy.get('div>input').last().type('chamlecks@gmail.com');
+        cy.get('span:contains("Create new campaign")').click();
 
-    cy.get('span:contains("Save")').click();
+        cy.get('[placeholder="Campaign Name"]').type('Vlad Test2');
 
-    cy.get('p.text:contains("Campaign created")');
+        //Выбор нужного темплейта
+        cy.get('select').select('Template');
 
-})
+        cy.get('button[type="submit"]').click();
 
-it("Тест создания 2 компании",() => {
+        cy.get('div>textarea').type('Testing description');
 
-    cy.get('.navbar-item.has-dropdown').first().click();
+        cy.get('div>input').last().type('nickolas.kolotkov@gmail.com');
 
-    cy.get('a:contains("Campaigns")').click();
+        cy.get('span:contains("Save")').click();
 
-    cy.get('span:contains("Create new campaign")').click();
+        cy.get('p.text:contains("Campaign created")');
 
-    cy.get('[placeholder="Campaign Name"]').type('Test2');
-
-    //Выбор нужного темплейта
-    cy.get('select').select('Template');
-
-    cy.get('button[type="submit"]').click();
-
-    cy.get('div>textarea').type('Testing description');
-
-    cy.get('div>input').last().type('nickolas.kolotkov@gmail.com');
-
-    cy.get('span:contains("Save")').wait(4000).click();
-
-    cy.get('p.text:contains("Campaign created")');
-
-    cy.get('span:contains("Test2")');
+        cy.get('span:contains("Test2")');
 
 
 
 
-})
+    })
+});
