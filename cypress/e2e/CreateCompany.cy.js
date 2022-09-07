@@ -1,16 +1,10 @@
-/// <reference types="cypress"/>
+import login from "./logIn.cy";
+describe("createCompanies", function () {
+    beforeEach(() => {
+        cy.restoreLocalStorage();
+    });
 
-it("Тест логина",() => {
-
-    cy.visit ('/');
-
-    cy.get('[type="email"]').type('admin@gmail.com');
-
-    cy.get('[type="password"]').type('vI3iT581Lrh&');
-
-    cy.get('span:contains(" LOG IN ")').click();
-
-})
+it("login", login);
 
 it("Тест создания компании",() => {
 
@@ -63,5 +57,5 @@ it("Тест создания компании",() => {
         
    
        })
-
+    })
     
