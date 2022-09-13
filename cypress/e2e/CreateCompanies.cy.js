@@ -28,7 +28,7 @@ describe("createCompanies", function () {
 
         cy.get('p.text:contains("Campaign created")');
 
-    })
+    });
 
     it("Тест создания 2 компании",() => {
 
@@ -55,10 +55,10 @@ describe("createCompanies", function () {
 
         cy.get('span:contains("Test2")');
 
-    })
+    });
         it("Тест фильтрации активных компаний",() => {
 
-            cy.get('.button>span:contains("Active")').click()
+            cy.get('.button>span:contains("Active")').click();
 
             //находим слово Campaign в теге span 
             cy.get('span:contains("Campaign")')
@@ -68,10 +68,116 @@ describe("createCompanies", function () {
             .find('span:contains("Test"), span:contains("Test2")')
             //и создаем условия что они не должны быть найдены
             .should('not.exist');
+            
 
+    });
+
+    it("Тест фильтрации не активных компаний",() => {
+
+        cy.get('.mdi.mdi-close-circle').first().click()
+
+        cy.get('.button>span:contains("Inactive")').click()
+
+        //находим слово Campaign в теге span 
+        cy.get('span:contains("Campaign")')
+        //указываем в каком родительском элементе есть это слово
+        .parents('.table-wrapper')
+        //пробуем найти указанные слова в тегах span
+        .find('span.has-text-weight-bold:contains("Campaign")')
+        //и создаем условия что они не должны быть найдены
+        .should('not.exist')
+        //Ищем две кампании с соответствующими названиями
+        cy.get('span:contains("Test"), span:contains("Test2")')
+    });
+
+    it("Тест фильтрации дефолтных компаний",() => {
+
+        cy.get('.mdi.mdi-close-circle').first().click()
+
+        cy.get('.button>span:contains("Default")').click()
+
+        //находим слово Campaign в теге span 
+        cy.get('span:contains("Campaign")')
+        //указываем в каком родительском элементе есть это слово
+        .parents('.table-wrapper')
+        //пробуем найти указанные слова в тегах span
+        .find('span.has-text-weight-bold:contains("Campaign")')
+        
+    });
+
+    it("Тест фильтрации кастомных компаний",() => {
+
+        cy.get('.mdi.mdi-close-circle').first().click()
+
+        cy.get('.button>span:contains("Custom")').click()
+
+        //находим слово Campaign в теге span 
+        cy.get('span:contains("Campaign")')
+        //указываем в каком родительском элементе есть это слово
+        .parents('.table-wrapper')
+        //пробуем найти указанные слова в тегах span
+        .find('span.has-text-weight-bold:contains("Campaign")')
+
+        .should('not.exist')
+        //Ищем две кампании с соответствующими названиями
+        cy.get('span:contains("Test"), span:contains("Test2")')
+
+        cy.get('.mdi.mdi-close-circle').first().click()
+        
+    });
+
+    it("Деактивация/Активация",() => {
+
+        /*cy.get('span:contains("Campaign")')
+        //указываем родительский элемент для искомой кнопки
+        .parents ('tr')
+        //находим тег отвечающий за искомую кнопку
+        .find('.check')
+    
+        .click()
 
         
+*/
+        cy.get('span.has-text-weight-bold:contains("Campaign")')
+        //указываем в каком родительском элементе есть это слово
+        .parents('tr')
+        //пробуем найти указанные слова в тегах span
+        .find('span.check')
 
+        .click()
 
-    })
+        cy.get('p.text:contains("Campaign edited")');
+       });
+
+    it("Удаление компани Test",() => {
+
+        cy.get('span:contains("Test")')
+
+       .parents('td')
+    
+       .should('contain','Test')
+
+       .find('.mdi.mdi-delete').click();
+
+       cy.get('span:contains("Delete")').click();
+
+       cy.get('p.text:contains("Campaign deleted")');
+
+    });
+
+    it("Удаление компани Test2",() => {
+
+        cy.get('span:contains("Test2")')
+
+       .parents('td')
+    
+       .should('contain','Test2')
+
+       .find('.mdi.mdi-delete').click();
+
+       cy.get('span:contains("Delete")').click();
+
+       cy.get('p.text:contains("Campaign deleted")');
+    
+        });
 });

@@ -53,9 +53,6 @@ it("Тест создания компании",() => {
 
         //cy.get('span:contains("Campaign")').find('.check').click()
 
-        
-        
-   
        })
     })
     

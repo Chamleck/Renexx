@@ -55,3 +55,13 @@ Cypress.on('url:changed', () => {
 Cypress.on('before:url:changed', () => {
     localStorageRestore();
 });
+
+Cypress.Commands.add('RemoveCampaign', () => {
+
+cy.get('span:contains("Test")').parents('tr').find('.icon.cursor-pointer').click();
+
+cy.get('span:contains("Delete")').click();
+
+cy.get('p.text:contains("Campaign deleted")');
+
+    });
