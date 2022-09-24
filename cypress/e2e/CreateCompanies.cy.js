@@ -38,7 +38,7 @@ describe("createCompanies", function () {
 
         cy.get('span:contains("Create new campaign")').click();
 
-        cy.get('[placeholder="Campaign Name"]').type('Test2');
+        cy.get('[placeholder="Campaign Name"]').type('quest');
 
         //Выбор нужного темплейта
         cy.get('select').select('Template');
@@ -53,9 +53,29 @@ describe("createCompanies", function () {
 
         cy.get('p.text:contains("Campaign created")');
 
-        cy.get('span:contains("Test2")');
+        cy.get('span:contains("quest")');
 
     });
+
+    it("Тест фильтрации через окошко",() => {
+            
+        cy.get('[autocomplete="on"]')
+        .type('quest')
+        .should('contain.value', 'quest')
+
+        //находим слово Campaign в теге span 
+        cy.get('span:contains("Campaign")')
+        //указываем в каком родительском элементе есть это слово
+        .parents('.table-wrapper')
+        //пробуем найти указанные слова в тегах span
+        .find('span.has-text-weight-bold:contains("Campaign"),span:contains("Test")',)
+        //и создаем условия что они не должны быть найдены
+        .should('not.exist')
+
+        cy.get('[autocomplete="on"]').clear()
+
+    });
+
         it("Тест фильтрации активных компаний",() => {
 
             cy.get('.button>span:contains("Active")').click();
@@ -65,7 +85,7 @@ describe("createCompanies", function () {
             //указываем в каком родительском элементе есть это слово
             .parents('.table-wrapper')
             //пробуем найти указанные слова в тегах span
-            .find('span:contains("Test"), span:contains("Test2")')
+            .find('span:contains("Test"), span:contains("quest")')
             //и создаем условия что они не должны быть найдены
             .should('not.exist');
             
@@ -87,7 +107,7 @@ describe("createCompanies", function () {
         //и создаем условия что они не должны быть найдены
         .should('not.exist')
         //Ищем две кампании с соответствующими названиями
-        cy.get('span:contains("Test"), span:contains("Test2")')
+        cy.get('span:contains("Test"), span:contains("quest")')
     });
 
     it("Тест фильтрации дефолтных компаний",() => {
@@ -120,7 +140,7 @@ describe("createCompanies", function () {
 
         .should('not.exist')
         //Ищем две кампании с соответствующими названиями
-        cy.get('span:contains("Test"), span:contains("Test2")')
+        cy.get('span:contains("Test"), span:contains("quest")')
 
         cy.get('.mdi.mdi-close-circle').first().click()
         
@@ -146,38 +166,32 @@ describe("createCompanies", function () {
 
         .click()
 
+        cy.get('p.text:contains("Campaign edited")')
+
         cy.get('p.text:contains("Campaign edited")');
        });
 
     it("Удаление компани Test",() => {
-
         cy.get('span:contains("Test")')
+        .parents('tr')
+        .find('.icon.cursor-pointer').eq(0)
+        .invoke('attr', 'style', 'visibility: visible')
+        .click();
 
-       .parents('td')
+        cy.get('span:contains("Delete")').click();
     
-       .should('contain','Test')
-
-       .find('.mdi.mdi-delete').click();
-
-       cy.get('span:contains("Delete")').click();
-
-       cy.get('p.text:contains("Campaign deleted")');
+        cy.get('p.text:contains("Campaign deleted")');
 
     });
 
-    it("Удаление компани Test2",() => {
+    it("Удаление компани quest",() => {
 
-        cy.get('span:contains("Test2")')
+        cy.get('span:contains("quest")').parents('tr').click().find('.icon.cursor-pointer').click();
 
-       .parents('td')
+        cy.get('span:contains("Delete")').click();
     
-       .should('contain','Test2')
+        cy.get('p.text:contains("Campaign deleted")');
 
-       .find('.mdi.mdi-delete').click();
-
-       cy.get('span:contains("Delete")').click();
-
-       cy.get('p.text:contains("Campaign deleted")');
     
         });
 });

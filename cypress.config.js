@@ -5,6 +5,7 @@ module.exports = defineConfig({
   // the e2e or component configuration
     viewportHeight: 1080,
     viewportWidth: 1920,
+    watchForFileChanges: false,
   e2e: {
     setupNodeEvents(on, config) {
       console.log(config) // see everything in here!
