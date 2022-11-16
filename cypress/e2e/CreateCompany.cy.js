@@ -1,58 +1,40 @@
-import login from "./logIn.cy";
-describe("createCompanies", function () {
+import {login,createCampaign,removeCampaign} from '../support/helper.js';
+import campaignsPage from '../support/Pages/CampaignsPage';
+import campaignEditorPage from '../support/Pages/CampaignEditorPage';
+import btns from '../fixtures/radioBtns.json';
+
+describe("create Company", function () {
     beforeEach(() => {
         cy.restoreLocalStorage();
     });
 
-it("login", login);
+    it("login", login);
 
-it("Тест создания компании",() => {
 
-    cy.get('.navbar-item.has-dropdown').first().click();
+    it("Тест создания компании", () => {
 
-    cy.get('a:contains("Campaigns")').click();
-
-    cy.get('span:contains("Create new campaign")').click();
-
-    cy.get('[placeholder="Campaign Name"]').type('Test');
-
-    //Выбор нужного темплейта
-    cy.get('select').select('Template');
-
-    cy.get('button[type="submit"]').click();
-
-    cy.get('div>textarea').type('Testing description');
-
-    cy.get('div>input').last().type('chamlecks@gmail.com');
-
-    cy.get('span:contains("Save")').click();
-
-    cy.get('p.text:contains("Campaign created")');
+    createCampaign('Test','Template','Description','chamlecks@gmail.com')
 })
-    it("Удаление компании",() => {
 
-     //удаление кампании
-     //
-    cy.get('span:contains("Test")').parents('tr').find('.icon.cursor-pointer').click();
-
-    cy.get('span:contains("Delete")').click();
-
-    cy.get('p.text:contains("Campaign deleted")');
-
-    })
-
-    it("Деактивация/Активация",() => {
-
-        cy.get('span:contains("Campaign")')
-        //указываем родительский элемент для искомой кнопки
-        .parents ('tr')
-        //находим тег отвечающий за искомую кнопку
-        .find('.check')
-        
-        .click()
-
-        //cy.get('span:contains("Campaign")').find('.check').click()
-
-       })
-    })
+it("Тест редактирования кампании", ()=>{
+    campaignsPage.pushEditCampaignButton('Test')
+    campaignEditorPage.selectDelay('1 day')
+    campaignEditorPage.selectTiming('12:00 PM')
+    campaignEditorPage.clickAddRule()
+    campaignEditorPage.clickSpecificBrandRule()
+    campaignEditorPage.addSpecificBrand('DEWALT')
+    campaignEditorPage.clickAddRule()
+    campaignEditorPage.clickSpecificProductRule()
+    campaignEditorPage.addSpecificProduct('AC123')
+    campaignEditorPage.selectRadioBtn(btns.contain)
+    campaignEditorPage.getRadioBtn(btns.contain)
+    .should('be.enabled')
+    campaignEditorPage.clickSaveBtn()
     
+})
+
+it("Тест удаления компании", () => {
+
+    removeCampaign('Test')
+})
+})

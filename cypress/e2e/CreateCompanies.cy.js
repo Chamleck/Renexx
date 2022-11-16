@@ -1,197 +1,276 @@
-import login from "./logIn.cy";
+/// <reference types="cypress"/>
 
-describe("createCompanies", function () {
+import {login} from '../support/helper.js';
+import campaignsPage from '../support/Pages/CampaignsPage';
+import campaignEditorPage from '../support/Pages/CampaignEditorPage';
+import btns from '../fixtures/radioBtns.json';
+import mainPage from '../support/Pages/MainPage';
+
+describe("Actions with Companies",  () => {
     beforeEach(() => {
         cy.restoreLocalStorage();
-    })
+    });
+
     it("login", login);
 
-    it("Тест создания 1 компании",() => {
-        cy.get('.navbar-item.has-dropdown').first().click();
+    describe("Creating companies",  () => {
 
-        cy.get('a:contains("Campaigns")').click();
+    it("Тест создания 1 компании", () => {
 
-        cy.get('span:contains("Create new campaign")').click();
+        campaignsPage.submitPopUpForm('Test','Template');
 
-        cy.get('[placeholder="Campaign Name"]').type('Test');
+        campaignEditorPage.submitCampaignCreationForm('Testing description','chamlecks@gmail.com');
 
-        //Выбор нужного темплейта
-        cy.get('select').select('Template');
+        campaignsPage.getPopUpMessage()
+        .should('contain', "Campaign created");
 
-        cy.get('button[type="submit"]').click();
+        campaignsPage.getCampaignNameHolder('Test')
+        .should('contain', "Test" );
 
-        cy.get('div>textarea').type('Testing description');
+    });
+    
+    it("Тест создания 2 компании", () => {
 
-        cy.get('div>input').last().type('chamlecks@gmail.com');
+        campaignsPage.submitPopUpForm('quest','Template');
 
-        cy.get('span:contains("Save")').click();
+        campaignEditorPage.submitCampaignCreationForm('Testing description','nickolas.kolotkov@gmail.com');
 
-        cy.get('p.text:contains("Campaign created")');
+        campaignsPage.getPopUpMessage()
+        .should('contain', "Campaign created");
+
+        campaignsPage.getCampaignNameHolder('quest')
+        .should('contain', "quest" );
 
     });
 
-    it("Тест создания 2 компании",() => {
+})
 
-        cy.get('.navbar-item.has-dropdown').first().click();
+describe("Editing companies",  () => {
 
-        cy.get('a:contains("Campaigns")').click();
+it("Тест редактирования кампании", ()=>{
 
-        cy.get('span:contains("Create new campaign")').click();
+    campaignsPage.pushEditCampaignButton('Test')
+    campaignEditorPage.selectDelay('1 day')
+    campaignEditorPage.selectTiming('12:00 PM')
+    campaignEditorPage.clickAddRule()
+    campaignEditorPage.clickSpecificBrandRule()
+    campaignEditorPage.addSpecificBrand('DEWALT')
+    campaignEditorPage.clickAddRule()
+    campaignEditorPage.clickSpecificProductRule()
+    campaignEditorPage.addSpecificProduct('AC123')
+    campaignEditorPage.selectRadioBtn(btns.contain)
+    campaignEditorPage.getRadioBtn(btns.contain)
+    .should('be.enabled')
+    campaignEditorPage.clickSaveBtn()
+    campaignsPage.getPopUpMessage()
+    .should('contain', "Campaign edited");
+    
+});
+it("Тест редактирования отмена сохранения, вызов предложения сохранения переходом на другую страницу, сохранение", ()=>{
 
-        cy.get('[placeholder="Campaign Name"]').type('quest');
+    campaignsPage.pushEditCampaignButton('Test')
+    campaignEditorPage.selectDelay('2 days')
+    campaignEditorPage.selectTiming('11:00 PM')
+    campaignEditorPage.addSpecificBrand('Bonide')
+    campaignEditorPage.addSpecificProduct('AC122')
+    campaignEditorPage.selectRadioBtn(btns.asin)
+    campaignEditorPage.getRadioBtn(btns.asin)
+    .should('be.enabled')
+    campaignEditorPage.clickCancelBtn()
+    campaignEditorPage.getModalWindowWithOptions().should('exist')
+    campaignEditorPage.clickModalCancelBtn()
+    campaignEditorPage.getModalWindowWithOptions().should('not.exist')
+    campaignEditorPage.getCampaignEditorPage().should('exist')
+    mainPage.openDashboardPage()
+    campaignEditorPage.getModalWindowWithOptions().should('exist')
+    campaignEditorPage.clickYesSaveBtn()
+    campaignsPage.getPopUpMessage()
+    .should('contain', "Campaign edited");
+    mainPage.openCampaignsPage()
 
-        //Выбор нужного темплейта
-        cy.get('select').select('Template');
+    
+});
 
-        cy.get('button[type="submit"]').click();
+it("Удаление тегов, проверка всех полей", ()=>{
+cy.wait(1000)
+    //cy.get('tr:contains("Test")',{timeout:2000});
 
-        cy.get('div>textarea').type('Testing description');
+    campaignsPage.pushEditCampaignButton('Test')
+    campaignEditorPage.getDescriptionField()
+    .should('have.value', 'Testing description')
+    campaignEditorPage.getRecieverEmailField()
+    .should('have.value', 'chamlecks@gmail.com')
+    campaignEditorPage.getTemplateSelector().should('contain','Template')
+    campaignEditorPage.getDelayRangeSelector()
+    .should('have.value', '2')
+    campaignEditorPage.getSendTimeSelector()
+    .should('have.value', '23')
+    campaignEditorPage.getBrandsContainer()
+    .should('contain', 'Bonide','DEWALT')
+    campaignEditorPage.getSkuAsinContainer()
+    .should('contain', 'AC123', 'AC122')
+    campaignEditorPage.getRadioBtn(btns.asin)
+    .should('be.enabled')
+    campaignEditorPage.getRadioBtn(btns.contain)
+    .should('be.enabled')
+    campaignEditorPage.removeTag('Bonide')
+    campaignEditorPage.getBrandsContainer()
+    .should('not.contain', 'Bonide')
+    campaignEditorPage.removeTag('AC123')
+    campaignEditorPage.getSkuAsinContainer()
+    .should('not.contain', 'AC123')
+    campaignEditorPage.clickSaveBtn()
+    campaignsPage.getPopUpMessage()
+    .should('contain', "Campaign edited");
+    
+});
 
-        cy.get('div>input').last().type('nickolas.kolotkov@gmail.com');
 
-        cy.get('span:contains("Save")').click();
+})
 
-        cy.get('p.text:contains("Campaign created")');
+describe("Filtrations",  () => {
 
-        cy.get('span:contains("quest")');
+    it("Тест фильтрации через поисковое окно", () => {
 
-    });
-
-    it("Тест фильтрации через окошко",() => {
-            
-        cy.get('[autocomplete="on"]')
-        .type('quest')
-        .should('contain.value', 'quest')
-
-        //находим слово Campaign в теге span 
-        cy.get('span:contains("Campaign")')
-        //указываем в каком родительском элементе есть это слово
-        .parents('.table-wrapper')
-        //пробуем найти указанные слова в тегах span
-        .find('span.has-text-weight-bold:contains("Campaign"),span:contains("Test")',)
-        //и создаем условия что они не должны быть найдены
-        .should('not.exist')
-
-        cy.get('[autocomplete="on"]').clear()
-
-    });
-
-        it("Тест фильтрации активных компаний",() => {
-
-            cy.get('.button>span:contains("Active")').click();
-
-            //находим слово Campaign в теге span 
-            cy.get('span:contains("Campaign")')
-            //указываем в каком родительском элементе есть это слово
-            .parents('.table-wrapper')
-            //пробуем найти указанные слова в тегах span
-            .find('span:contains("Test"), span:contains("quest")')
-            //и создаем условия что они не должны быть найдены
-            .should('not.exist');
-            
-
-    });
-
-    it("Тест фильтрации не активных компаний",() => {
-
-        cy.get('.mdi.mdi-close-circle').first().click()
-
-        cy.get('.button>span:contains("Inactive")').click()
-
-        //находим слово Campaign в теге span 
-        cy.get('span:contains("Campaign")')
-        //указываем в каком родительском элементе есть это слово
-        .parents('.table-wrapper')
-        //пробуем найти указанные слова в тегах span
-        .find('span.has-text-weight-bold:contains("Campaign")')
-        //и создаем условия что они не должны быть найдены
-        .should('not.exist')
-        //Ищем две кампании с соответствующими названиями
-        cy.get('span:contains("Test"), span:contains("quest")')
-    });
-
-    it("Тест фильтрации дефолтных компаний",() => {
-
-        cy.get('.mdi.mdi-close-circle').first().click()
-
-        cy.get('.button>span:contains("Default")').click()
-
-        //находим слово Campaign в теге span 
-        cy.get('span:contains("Campaign")')
-        //указываем в каком родительском элементе есть это слово
-        .parents('.table-wrapper')
-        //пробуем найти указанные слова в тегах span
-        .find('span.has-text-weight-bold:contains("Campaign")')
+        cy.wait(1000)
         
+        cy.location().then(location=>{
+            //перевірка локейшн (урл)
+            expect(location.href).to.eq('https://emails-dev.alpha-pram.com/campaigns/')
+        })
+
+        campaignsPage.performSearch('quest');
+
+        campaignsPage.getSearchField()
+        .should('contain.value','quest');
+
+        campaignsPage.getTableForCompanies()
+        .contains("Campaign").should('not.exist');
+
+        campaignsPage.getCampaignNameHolder('Test')
+        .should('not.exist');
+    
+        campaignsPage.getCampaignNameHolder('quest')
+        .should('exist');
+
+        campaignsPage.clearSearchField();
+
     });
 
-    it("Тест фильтрации кастомных компаний",() => {
+    it("Тест фильтрации активных компаний с помощью фильтров", () => {
 
-        cy.get('.mdi.mdi-close-circle').first().click()
 
-        cy.get('.button>span:contains("Custom")').click()
+        campaignsPage.selectCampaignFilter('Active');
 
-        //находим слово Campaign в теге span 
-        cy.get('span:contains("Campaign")')
-        //указываем в каком родительском элементе есть это слово
-        .parents('.table-wrapper')
-        //пробуем найти указанные слова в тегах span
-        .find('span.has-text-weight-bold:contains("Campaign")')
+        campaignsPage.getCampaignNameHolder('Test')
+        .should('not.exist');
 
-        .should('not.exist')
-        //Ищем две кампании с соответствующими названиями
-        cy.get('span:contains("Test"), span:contains("quest")')
+        campaignsPage.getCampaignNameHolder('quest')
+        .should('not.exist');
 
-        cy.get('.mdi.mdi-close-circle').first().click()
+        campaignsPage.getTableForCompanies()
+        .should('contain', "Campaign");
+
+        campaignsPage.selectCampaignFilter('Active');
+
+    });
+
+    it("Тест фильтрации не активных компаний с помощью фильтров", () => {
+
+        campaignsPage.enableDisableCampaign('Test');
+
+        campaignsPage.selectCampaignFilter('Inactive');
         
-    });
+        //почемуто такой формат не работает с should(exist)
+        //campaignsPage.getTableForCompanies()
+        //.find(campaignsPage.getCampaignNameHolder('Test'),campaignsPage.getCampaignNameHolder('quest'))
+        campaignsPage.getCampaignNameHolder('Test')
+        .should('not.exist');
 
-    it("Деактивация/Активация",() => {
+        campaignsPage.getCampaignNameHolder('quest')
+        .should('exist');
 
-        /*cy.get('span:contains("Campaign")')
-        //указываем родительский элемент для искомой кнопки
-        .parents ('tr')
-        //находим тег отвечающий за искомую кнопку
-        .find('.check')
-    
-        .click()
+        campaignsPage.getTableForCompanies()
+        .contains("Campaign").should('not.exist');
 
+        campaignsPage.selectCampaignFilter('Inactive');
+
+        campaignsPage.enableDisableCampaign('Test');
         
-*/
-        cy.get('span.has-text-weight-bold:contains("Campaign")')
-        //указываем в каком родительском элементе есть это слово
-        .parents('tr')
-        //пробуем найти указанные слова в тегах span
-        .find('span.check')
-
-        .click()
-
-        cy.get('p.text:contains("Campaign edited")')
-
-        cy.get('p.text:contains("Campaign edited")');
-       });
-
-    it("Удаление компани Test",() => {
-        cy.get('span:contains("Test")')
-        .parents('tr')
-        .find('.icon.cursor-pointer').eq(0)
-        .invoke('attr', 'style', 'visibility: visible')
-        .click();
-
-        cy.get('span:contains("Delete")').click();
-    
-        cy.get('p.text:contains("Campaign deleted")');
 
     });
 
-    it("Удаление компани quest",() => {
+    it("Тест фильтрации дефолтных компаний", () => {
 
-        cy.get('span:contains("quest")').parents('tr').click().find('.icon.cursor-pointer').click();
+        campaignsPage.selectCampaignFilter('Default');
 
-        cy.get('span:contains("Delete")').click();
-    
-        cy.get('p.text:contains("Campaign deleted")');
+        campaignsPage.getCampaignNameHolder('Test')
+        .should('not.exist');
+        
+        campaignsPage.getCampaignNameHolder('quest')
+        .should('not.exist');
 
-    
-        });
+        campaignsPage.getCampaignNameHolder('Campaign')
+        .should('exist');
+
+        campaignsPage.selectCampaignFilter('Default');
+    });
+
+    it("Тест фильтрации кастомных компаний", () => {
+
+        campaignsPage.selectCampaignFilter('Custom');
+
+        campaignsPage.getCampaignNameHolder('Test')
+        .should('exist');
+
+        campaignsPage.getCampaignNameHolder('quest')
+        .should('exist');
+
+        campaignsPage.getTableForCompanies().contains("Campaign")
+        .should('exist');
+
+        campaignsPage.selectCampaignFilter('Custom');
+
+    });
+})
+describe("Activation/Deactivation of companies",  () => {
+
+    it("Деактивация/Активация", () => {
+
+        campaignsPage.enableDisableCampaign('Test');
+
+        campaignsPage.getPopUpMessage()
+        .should('be.visible').and('contain', "Campaign edited");
+
+        campaignsPage.enableDisableCampaign('Test');
+
+        campaignsPage.getPopUpMessage()
+        .should('contain', "Campaign edited");
+
+    });
+
+})
+
+describe("Removing of companies",  () => {
+
+    it("Удаление компани Test", () => {
+
+        cy.get('.campaign-default.text-white.is-align-self-flex-start.is-size-7',{timeout:2000});
+        
+        campaignsPage.removeCampaign('Test');
+
+        campaignsPage.getPopUpMessage().should('contain', "Campaign deleted");
+
+    });
+
+    it("Удаление компани quest", () => {
+
+        campaignsPage.removeCampaign('quest');
+
+        campaignsPage.getPopUpMessage().should('contain', "Campaign deleted");
+
+
+    });
+})
+
 });
