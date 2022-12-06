@@ -2,12 +2,12 @@
 import authorizationPage from '../support/Pages/AuthorizationPage';
 import mainPage from '../support/Pages/MainPage';
 import {login, loginViaAPI} from '../support/helper';
-import user from '../fixtures/radioBtns.json';
+import user from '../fixtures/user.json';
 
 it('Authorization with API', () => {
-  loginViaAPI()
+  loginViaAPI(user)
 })
-//it("login", loginViaAPI(user));
+
 
 
 
@@ -70,7 +70,7 @@ wrongCredentials.forEach(({email, password }) =>{
     authorizationPage.getPopUpNotification()
     .should('contain', 'User not found or password incorrect!');
 })
-})
+});
 
 invalidCredentials.forEach(({email, password }) =>{
     it(`Adding wrong format email ${email} , adding password ${password} to email & password fields`, () => {
@@ -79,7 +79,7 @@ invalidCredentials.forEach(({email, password }) =>{
       authorizationPage.getValidationMessage()
       .should('exist');
   })
-  })
+  });
 
 
 

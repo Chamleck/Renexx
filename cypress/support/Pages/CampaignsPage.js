@@ -4,11 +4,11 @@ import BasePage from "./BasePage";
 class CampaignsPage extends BasePage {
 
     getCreateCampaignButton() {
-        return cy.get('span:contains("Create new campaign")')
+        return cy.get('span:contains("Create new campaign")');
     }
 
     getCampaignNameField() {
-        return cy.get('[placeholder="Campaign Name"]')
+        return cy.get('[placeholder="Campaign Name"]');
     }
 
     getSelectTemplateMenu() {
@@ -16,7 +16,7 @@ class CampaignsPage extends BasePage {
     }
 
     getCreateButton() {
-        return cy.get('button[type="submit"]')
+        return cy.get('button[type="submit"]');
     }
 
     getPopUpMessage() {

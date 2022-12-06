@@ -1,0 +1,42 @@
+[
+    {
+        "title": "Emails sent",
+        "value": 0,
+        "type": "Send"
+    },
+    {
+        "title": "Emails Delivery",
+        "value": 0,
+        "type": "Delivery"
+    },
+    {
+        "title": "Emails Open",
+        "value": 0,
+        "type": "Open"
+    },
+    {
+        "title": "Emails Bounced",
+        "value": 0,
+        "type": "Bounced"
+    },
+    {
+        "title": "Emails Complaint",
+        "value": 0,
+        "type": "Complaint"
+    },
+    {
+        "title": "Emails Delayed",
+        "value": 0,
+        "type": "Delayed"
+    },
+    {
+        "title": "Orders Imported",
+        "value": 0,
+        "type": "Orders"
+    },
+    {
+        "title": "Emails issued",
+        "value": 0,
+        "type": "Errored"
+    }
+]

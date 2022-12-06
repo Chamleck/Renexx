@@ -16,7 +16,7 @@ module.exports = defineConfig({
 
       config.defaultCommandTimeout = 10000
       config.pageLoadTimeout = 100000
-      config.baseUrl = 'https://emails-dev.alpha-pram.com/login'
+      config.baseUrl = 'https://emails-dev.alpha-pram.com/'
       
 
       

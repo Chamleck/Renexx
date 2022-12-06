@@ -1,6 +1,6 @@
 /// <reference types="cypress"/>
 
-import {login} from '../support/helper.js';
+import {login, loginViaAPI} from '../support/helper.js';
 import campaignsPage from '../support/Pages/CampaignsPage';
 import campaignEditorPage from '../support/Pages/CampaignEditorPage';
 import btns from '../fixtures/radioBtns.json';
@@ -12,6 +12,9 @@ describe("Actions with Companies",  () => {
     });
 
     it("login", login);
+        
+        
+    
 
     describe("Creating companies",  () => {
 
