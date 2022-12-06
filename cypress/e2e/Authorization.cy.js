@@ -1,4 +1,5 @@
 ///<reference types="cypress"/>
+
 import authorizationPage from '../support/Pages/AuthorizationPage';
 import mainPage from '../support/Pages/MainPage';
 import {login, loginViaAPI} from '../support/helper';

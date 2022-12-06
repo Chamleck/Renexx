@@ -15,8 +15,6 @@ describe("Actions with Companies", () => {
     mockStatistics(newValues);
     cy.log(JSON.stringify(newValues));
     mainPage.getEmailsSent().should('contain', newValues[0].value);
-    
-
-  })
+  });
 });
 
