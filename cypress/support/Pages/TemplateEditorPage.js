@@ -21,7 +21,7 @@ class TemplateEditorPage extends BasePage{
     }
 
     getAddPicBtn(){
-        return cy.get('span:contains("ADD IMAGE")');
+        return cy.get('span:contains("ADD IMAGE")>input');
     }
 
     getAddDocBtn(){
@@ -437,7 +437,7 @@ class TemplateEditorPage extends BasePage{
 
     addDoc(file){
         cy.log(`**Adding PDF*`);
-        this.getAddDocBtn().selectFile(file);
+        this.getAddDocBtn().attachFile(file);
     }
 
     createTemplateWithHtml(headerText,bodyText,footerText,titleName){
