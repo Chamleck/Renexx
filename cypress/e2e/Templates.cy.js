@@ -6,7 +6,6 @@ import mainPage from '../support/Pages/MainPage';
 import templatesPage from '../support/Pages/TemplatesPage';
 import templateEditorPage from '../support/Pages/TemplateEditorPage.js';
 import settings from '../fixtures/templateSettings.json';
-import picture from '../fixtures/testFiles/testPic.jpg';
 
 describe("Creationg of template",  () => {
     beforeEach(() => {
@@ -131,5 +130,8 @@ describe("Creationg of template",  () => {
     templatesPage.getCustomTemplate('Custom').should('exist');
     templatesPage.clickEditBtn('Custom');
     templateEditorPage.addImage('cypress/fixtures/testFiles/testPic.jpg');
+    cy.wait(3000);
+    cy.get('[title="testPic.jpg"]',{timeout:2000});
+
 });
 })

@@ -21,7 +21,7 @@ class TemplateEditorPage extends BasePage{
     }
 
     getAddPicBtn(){
-        return cy.get('span:contains("ADD IMAGE")>input');
+        return cy.get('input[accept="image/*"]');
     }
 
     getAddDocBtn(){
