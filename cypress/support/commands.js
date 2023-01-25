@@ -64,4 +64,30 @@ cy.get('span:contains("Delete")').click();
 
 cy.get('p.text:contains("Campaign deleted")');
 
-    });
+});
+
+Cypress.Commands.add("exist", (selector) => {
+    cy.get('body').should('exist').then(($body) => {
+      return new Cypress.Promise((resolve, reject) => {
+        if ($body.find(selector).length > 0) {
+          console.log("cy.exist() - Matching element found in DOM!");
+          resolve(true);
+        } else {
+          console.log("cy.exist() - Element did not exist!");
+          resolve(false);
+        }
+      })
+    })
+  });
+
+//   cy.exist('.mat-radio-outer-circle').then(exists => {
+            
+//     if (exists) {
+        
+//        //тоді клікаємо по цьому товару
+       
+//     } else {
+//        //в іншому випадку клікаємо на кнопку яка відповідає за перехід на наступну сторінку
+//     }
+
+// })

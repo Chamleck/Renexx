@@ -1,3 +1,5 @@
+/// <reference types="cypress"/>
+
 import {login,createCampaign,removeCampaign} from '../support/helper.js';
 import campaignsPage from '../support/Pages/CampaignsPage';
 import campaignEditorPage from '../support/Pages/CampaignEditorPage';

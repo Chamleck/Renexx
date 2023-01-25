@@ -1,0 +1,42 @@
+[
+    {
+        "font": "Arial",
+        "allign": 1,
+        "size": "9px",
+        "allignCheck": "center",
+        "list": 0,
+        "listCheck": "ol",
+        "heading": 1
+    },
+  
+    {
+        "font": "sans",
+        "allign": 1,
+        "size": "10px",
+        "allignCheck": "left",
+        "list": 1,
+        "listCheck": "ul",
+        "heading": 2
+
+    },
+  
+    {
+        "font": "sans-serif",
+        "allign": 2,
+        "size": "12px",
+        "allignCheck": "right",
+        "list": 0,
+        "listCheck": "ol",
+        "heading": 3
+    },
+  
+    {
+        "font": "monospace",
+        "allign": 3,
+        "size": "14px",
+        "allignCheck": "justify",
+        "list": 1,
+        "listCheck": "ul",
+        "heading": 5
+    }
+  ]

@@ -38,7 +38,7 @@ export function loginViaAPI(user){
 
         cy.get('[type="password"]').type('vI3iT581Lrh&');
 
-        cy.get('span:contains(" LOG IN ")').click().wait(3000).should(() => {
+        cy.get('span:contains(" LOG IN ")').click().wait(3000).then(() => {
 
         cy.saveLocalStorage(localStorage);
         })
@@ -115,6 +115,14 @@ export function changeValues () {
     
         return item;
     })
+
+};
+
+export function mockSchedulingTable(data) {
+
+cy.intercept('GET', '**/scheduling/orders?page=1&limit=20', data);
+
+cy.reload();
 
 };
 

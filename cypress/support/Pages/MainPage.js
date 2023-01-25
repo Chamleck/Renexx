@@ -1,10 +1,11 @@
+/// <reference types="cypress"/>
 
 import BasePage from "./BasePage";
 
 class MainPage extends BasePage{
 
     getOrdersImported(){
-        return cypress.get('.column.is-6.is-4-widescreen').eq(0);
+        return cy.get('.column.is-6.is-4-widescreen').eq(0);
     }
 
     getEmailsSent(){
