@@ -6,16 +6,17 @@ import mainPage from '../support/Pages/MainPage';
 import templatesPage from '../support/Pages/TemplatesPage';
 import templateEditorPage from '../support/Pages/TemplateEditorPage.js';
 import settings from '../fixtures/templateSettings.json';
+import user from '../fixtures/user.json';
 
-describe("Creationg of template",  () => {
-    beforeEach(() => {
-        cy.restoreLocalStorage();
-    });
+describe("Templates", function () {
 
-    it("login", login);
+beforeEach(() => {
+
+    cy.login()
+  })
 
     it("Создание темплейта",()=>{
-
+        cy.visit('https://emails-dev.alpha-pram.com/');
         mainPage.openTemplatesPage();
         templatesPage.getDefaultTemplate().should('exist');
         templatesPage.addNewTemplate();
@@ -24,6 +25,7 @@ describe("Creationg of template",  () => {
     });
 
     it("Открытие созданного темплейта",()=>{
+        cy.visit('https://emails-dev.alpha-pram.com/templates/')
         templatesPage.getCustomTemplate('Custom').should('exist');
         templatesPage.editTemplate('Custom');
         templateEditorPage.unwarpHeader();
@@ -134,4 +136,5 @@ describe("Creationg of template",  () => {
     cy.get('[title="testPic.jpg"]',{timeout:2000});
 
 });
-})
+
+});

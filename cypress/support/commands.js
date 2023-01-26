@@ -25,6 +25,24 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import 'cypress-file-upload'
 
+Cypress.Commands.add('login', (
+  username = 'admin@gmail.com',
+  password = 'vI3iT581Lrh&'
+) => {
+  cy.session([username, password], () => {
+    cy.visit('/')
+    cy.get('[type="email"]').type(username);
+    cy.get('[type="password"]').type(password);
+    cy.get('span:contains(" LOG IN ")').click().wait(2000);
+  },
+  {
+    validate(){
+    cy.get('p:contains("Renex")').should('exist');
+  },
+  cacheAcrossSpecs: true,
+ })
+});
+
 Cypress.Commands.add('uploadFile', { prevSubject: true }, (subject, fixturePath, mimeType) => {
   cy.fixture(fixturePath, 'base64').then(content => {
     Cypress.Blob.base64StringToBlob(content, mimeType).then((blob) => {

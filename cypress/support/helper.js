@@ -30,19 +30,18 @@ export function loginViaAPI(user){
 
 
  export function login() {
-    
+
+        cy.session( () => {
 
         cy.visit('/');
 
         cy.get('[type="email"]').type('admin@gmail.com');
 
-        cy.get('[type="password"]').type('vI3iT581Lrh&');
+        cy.get('[type="password"]').type('vI3iT581Lrh&vI3iT581Lrh&');
 
-        cy.get('span:contains(" LOG IN ")').click().wait(3000).then(() => {
-
-        cy.saveLocalStorage(localStorage);
+        cy.get('span:contains(" LOG IN ")').click().wait(3000)
         })
-   
+    
 };
 
 export function createCampaign(campaignName,template,description,email){
