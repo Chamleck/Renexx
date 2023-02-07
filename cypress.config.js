@@ -1,5 +1,5 @@
 const { defineConfig } = require('cypress')
-
+let myUniqueId
 module.exports = defineConfig({
   // setupNodeEvents can be defined in either
   // the e2e or component configuration
@@ -8,8 +8,16 @@ module.exports = defineConfig({
     watchForFileChanges: false,
   e2e: {
     setupNodeEvents(on, config) {
-      console.log(config) // see everything in here!
-      
+  //додав таску яка буде зберігати айді та можна буде дістати його в іншому місці за командою
+      on('task', {
+        setMyUniqueId: (val) => {
+            return (myUniqueId = val);
+        },
+//таска щоб дістати змінну
+        getMyUniqueId: () => {
+            return myUniqueId;
+        }
+    })
       
       // modify config values
 

@@ -280,12 +280,12 @@ class TemplateEditorPage extends BasePage{
 //Arial //sans //sans-serif //monospace
     getHeaderFont(font){
 
-        return cy.get('#ql-picker-options-9')
+        return cy.get('.ql-picker-options').eq(0)
         .find(`.ql-picker-item[data-value="${font}"]`);
     }
 
     getHeaderHeadings(heading){
-        return cy.get('#ql-picker-options-11')
+        return cy.get('.ql-picker-options').eq(2)
         .find(`.ql-picker-item[data-value="${heading}"]`);
     }
 

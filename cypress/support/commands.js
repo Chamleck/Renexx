@@ -24,24 +24,36 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import 'cypress-file-upload'
-
-Cypress.Commands.add('login', (
-  username = 'admin@gmail.com',
-  password = 'vI3iT581Lrh&'
-) => {
-  cy.session([username, password], () => {
-    cy.visit('/')
-    cy.get('[type="email"]').type(username);
-    cy.get('[type="password"]').type(password);
-    cy.get('span:contains(" LOG IN ")').click().wait(2000);
-  },
-  {
-    validate(){
-    cy.get('p:contains("Renex")').should('exist');
-  },
-  cacheAcrossSpecs: true,
- })
+//додаємо команду логін яка буде зберігати данні сесії, в дужках треба додати id як аргумент
+// а також юзернейм та пароль
+Cypress.Commands.add('login', (id, username = 'admin@gmail.com', password = 'vI3iT581Lrh&') => {
+//в cy.session передаэмо id
+  cy.session(id, () => {
+      cy.visit('/')
+      cy.get('[type="email"]').type(username);
+      cy.get('[type="password"]').type(password);
+      cy.get('span:contains(" LOG IN ")').click().wait(2000);
+  }, {
+    //вмикаэмо налаштування щоб кеш зберыгався помыж сесіями
+      cacheAcrossSpecs: true,
+  })
 });
+
+//команди аналогічні тасці яка знаходиться в сайпрес конфіг
+//об'являємо порожню змінну 
+let id
+//в цій команді присвоюємо змінній id значання яке в аргументі команди
+Cypress.Commands.add('setId',(value) =>{
+ id = value
+ //повертаємо id
+ return id
+})
+//команда щоб дістати id просто повертає id який був наданий в попередній команді
+Cypress.Commands.add('getId',() =>{
+ return id
+})
+
+
 
 Cypress.Commands.add('uploadFile', { prevSubject: true }, (subject, fixturePath, mimeType) => {
   cy.fixture(fixturePath, 'base64').then(content => {

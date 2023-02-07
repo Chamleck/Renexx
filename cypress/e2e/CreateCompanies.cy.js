@@ -6,12 +6,12 @@ import campaignEditorPage from '../support/Pages/CampaignEditorPage';
 import btns from '../fixtures/radioBtns.json';
 import mainPage from '../support/Pages/MainPage';
 
-describe("Actions with Companies",  () => {
-    beforeEach(() => {
-        cy.restoreLocalStorage();
-    });
+describe("Companies test", ()=> {
 
-    it("login", login);
+    before(() => {
+
+    cy.login('testId')
+  })
         
         
     
@@ -20,13 +20,13 @@ describe("Actions with Companies",  () => {
 
     it("Тест создания 1 компании", () => {
 
+        cy.login('testId');
+        cy.visit('https://emails-dev.alpha-pram.com/');
+
         campaignsPage.submitPopUpForm('Test','Template');
-
         campaignEditorPage.submitCampaignCreationForm('Testing description','chamlecks@gmail.com');
-
         campaignsPage.getPopUpMessage()
         .should('contain', "Campaign created");
-
         campaignsPage.getCampaignNameHolder('Test')
         .should('contain', "Test" );
 
@@ -34,13 +34,13 @@ describe("Actions with Companies",  () => {
     
     it("Тест создания 2 компании", () => {
 
+        cy.login('testId');
+        cy.visit('https://emails-dev.alpha-pram.com/');
+
         campaignsPage.submitPopUpForm('quest','Template');
-
         campaignEditorPage.submitCampaignCreationForm('Testing description','nickolas.kolotkov@gmail.com');
-
         campaignsPage.getPopUpMessage()
         .should('contain', "Campaign created");
-
         campaignsPage.getCampaignNameHolder('quest')
         .should('contain', "quest" );
 
@@ -51,6 +51,9 @@ describe("Actions with Companies",  () => {
 describe("Editing companies",  () => {
 
 it("Тест редактирования кампании", ()=>{
+
+    cy.login('testId');  
+    cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
     campaignsPage.pushEditCampaignButton('Test')
     campaignEditorPage.selectDelay('1 day')
@@ -66,10 +69,13 @@ it("Тест редактирования кампании", ()=>{
     .should('be.enabled')
     campaignEditorPage.clickSaveBtn()
     campaignsPage.getPopUpMessage()
-    .should('contain', "Campaign edited");
-    
+    .should('contain', "Campaign edited");   
 });
+
 it("Тест редактирования отмена сохранения, вызов предложения сохранения переходом на другую страницу, сохранение", ()=>{
+
+    cy.login('testId');  
+    cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
     campaignsPage.pushEditCampaignButton('Test')
     campaignEditorPage.selectDelay('2 days')
@@ -97,6 +103,9 @@ it("Тест редактирования отмена сохранения, в�
 it("Удаление тегов, проверка всех полей", ()=>{
 cy.wait(1000)
     //cy.get('tr:contains("Test")',{timeout:2000});
+
+    cy.login('testId');  
+    cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
     campaignsPage.pushEditCampaignButton('Test')
     campaignEditorPage.getDescriptionField()
@@ -135,6 +144,9 @@ describe("Filtrations",  () => {
 
     it("Тест фильтрации через поисковое окно", () => {
 
+        cy.login('testId');  
+        cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
+
         cy.wait(1000)
         
         cy.location().then(location=>{
@@ -162,26 +174,26 @@ describe("Filtrations",  () => {
 
     it("Тест фильтрации активных компаний с помощью фильтров", () => {
 
+        cy.login('testId');  
+        cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
         campaignsPage.selectCampaignFilter('Active');
-
         campaignsPage.getCampaignNameHolder('Test')
         .should('not.exist');
-
         campaignsPage.getCampaignNameHolder('quest')
         .should('not.exist');
-
         campaignsPage.getTableForCompanies()
         .should('contain', "Campaign");
-
         campaignsPage.selectCampaignFilter('Active');
 
     });
 
     it("Тест фильтрации не активных компаний с помощью фильтров", () => {
 
-        campaignsPage.enableDisableCampaign('Test');
+        cy.login('testId');  
+        cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
+        campaignsPage.enableDisableCampaign('Test');
         campaignsPage.selectCampaignFilter('Inactive');
         
         //почемуто такой формат не работает с should(exist)
@@ -189,15 +201,12 @@ describe("Filtrations",  () => {
         //.find(campaignsPage.getCampaignNameHolder('Test'),campaignsPage.getCampaignNameHolder('quest'))
         campaignsPage.getCampaignNameHolder('Test')
         .should('not.exist');
-
         campaignsPage.getCampaignNameHolder('quest')
         .should('exist');
-
         campaignsPage.getTableForCompanies()
-        .contains("Campaign").should('not.exist');
-
+        .contains("Campaign")
+        .should('not.exist');
         campaignsPage.selectCampaignFilter('Inactive');
-
         campaignsPage.enableDisableCampaign('Test');
         
 
@@ -205,33 +214,32 @@ describe("Filtrations",  () => {
 
     it("Тест фильтрации дефолтных компаний", () => {
 
-        campaignsPage.selectCampaignFilter('Default');
+        cy.login('testId');  
+        cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
+        campaignsPage.selectCampaignFilter('Default');
         campaignsPage.getCampaignNameHolder('Test')
         .should('not.exist');
-        
         campaignsPage.getCampaignNameHolder('quest')
         .should('not.exist');
-
         campaignsPage.getCampaignNameHolder('Campaign')
         .should('exist');
-
         campaignsPage.selectCampaignFilter('Default');
     });
 
     it("Тест фильтрации кастомных компаний", () => {
 
-        campaignsPage.selectCampaignFilter('Custom');
+        cy.login('testId');  
+        cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
+        campaignsPage.selectCampaignFilter('Custom');
         campaignsPage.getCampaignNameHolder('Test')
         .should('exist');
-
         campaignsPage.getCampaignNameHolder('quest')
         .should('exist');
-
-        campaignsPage.getTableForCompanies().contains("Campaign")
+        campaignsPage.getTableForCompanies()
+        .contains("Campaign")
         .should('exist');
-
         campaignsPage.selectCampaignFilter('Custom');
 
     });
@@ -240,13 +248,14 @@ describe("Activation/Deactivation of companies",  () => {
 
     it("Деактивация/Активация", () => {
 
-        campaignsPage.enableDisableCampaign('Test');
+        cy.login('testId');  
+        cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
+        campaignsPage.enableDisableCampaign('Test');
         campaignsPage.getPopUpMessage()
-        .should('be.visible').and('contain', "Campaign edited");
-
+        .should('be.visible')
+        .and('contain', "Campaign edited");
         campaignsPage.enableDisableCampaign('Test');
-
         campaignsPage.getPopUpMessage()
         .should('contain', "Campaign edited");
 
@@ -258,19 +267,24 @@ describe("Removing of companies",  () => {
 
     it("Удаление компани Test", () => {
 
-        cy.get('.campaign-default.text-white.is-align-self-flex-start.is-size-7',{timeout:2000});
-        
-        campaignsPage.removeCampaign('Test');
+        cy.login('testId');  
+        cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
-        campaignsPage.getPopUpMessage().should('contain', "Campaign deleted");
+        cy.get('.campaign-default.text-white.is-align-self-flex-start.is-size-7',{timeout:2000});
+        campaignsPage.removeCampaign('Test');
+        campaignsPage.getPopUpMessage()
+        .should('contain', "Campaign deleted");
 
     });
 
     it("Удаление компани quest", () => {
 
-        campaignsPage.removeCampaign('quest');
+        cy.login('testId');  
+        cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
-        campaignsPage.getPopUpMessage().should('contain', "Campaign deleted");
+        campaignsPage.removeCampaign('quest');
+        campaignsPage.getPopUpMessage()
+        .should('contain', "Campaign deleted");
 
 
     });

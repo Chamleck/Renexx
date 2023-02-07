@@ -6,19 +6,22 @@ import campaignEditorPage from '../support/Pages/CampaignEditorPage';
 import btns from '../fixtures/radioBtns.json';
 
 describe("create Company", function () {
-    beforeEach(() => {
-        cy.restoreLocalStorage();
+    before(() => {
+        cy.login('testId');
     });
 
-    it("login", login);
+  
 
 
     it("Тест создания компании", () => {
-
+    cy.login('testId');
+    cy.visit('https://emails-dev.alpha-pram.com/');
     createCampaign('Test','Template','Description','chamlecks@gmail.com')
 })
 
 it("Тест редактирования кампании", ()=>{
+    cy.login('testId');
+    cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
     campaignsPage.pushEditCampaignButton('Test')
     campaignEditorPage.selectDelay('1 day')
     campaignEditorPage.selectTiming('12:00 PM')
@@ -36,7 +39,8 @@ it("Тест редактирования кампании", ()=>{
 })
 
 it("Тест удаления компании", () => {
-
+    cy.login('testId');
+    cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
     removeCampaign('Test')
 })
 })

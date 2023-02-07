@@ -7,7 +7,7 @@ import templateEditorPage from '../support/Pages/TemplateEditorPage.js';
 import settings from '../fixtures/templateSettings.json';
 
 
-describe("Templates", ()=> {
+describe("Templates", function () {
 
     before(() => {
 
@@ -15,47 +15,66 @@ describe("Templates", ()=> {
   })
 
     it("Создание темплейта",()=>{
-        cy.login('testId');
+        cy.login('testId')
         cy.visit('https://emails-dev.alpha-pram.com/');
-
         mainPage.openTemplatesPage();
         templatesPage.getDefaultTemplate().should('exist');
         templatesPage.addNewTemplate();
+        //перехоплюємо запит який буде містити айді темплейту у респонсі і передаємо
+        //його далі за допомогою .as('id') під id розуміється весь респонс
+        cy.intercept('POST','**/templates').as('id')
         templateEditorPage.createTemplate('abc123','Custom');
         templatesPage.getCustomTemplate('Custom').should('exist');
+    //чекаємо коли з'явиться наш запит .then беремо цей реквест
+    //і дістаємо з нього що потрібно , тільки через cy.wait можна дістати
+    //з інтерсепту тіло респонсу   
+    cy.wait('@id').then((request)=>{
+    cy.log(JSON.stringify(request.response.body.id))
+    let id = request.response.body.id
+   // cy.task('setMyUniqueId', id)
+   cy.setId(id)
+})
     });
 
     
 
     it("Открытие созданного темплейта",()=>{
-        cy.login('testId');
-        cy.visit(`https://emails-dev.alpha-pram.com/templates`);
-
+        cy.login('testId')
+        //команди по збереженню змінної та передачї її в інше місце працюють тільки 
+        // з .then мабуть тому що пов'язано з резолвом промісу
+        cy.getId().then((id)=>{
+       // cy.task('getMyUniqueId').then((id)=>{
+        cy.visit(`https://emails-dev.alpha-pram.com/templates/${id}`)
         templatesPage.getCustomTemplate('Custom').should('exist');
         templatesPage.editTemplate('Custom');
         templateEditorPage.unwarpHeader();
-  
-    
+   // })
+})
+
     settings.forEach(({font, allign, list, size, allignCheck, listCheck}, index) =>{
-        
-        
+
+
         cy.log(`**Редактирование темплейта # ${index}, проверка элементов**`)
 
     
         templateEditorPage.editHeader(font, allign, list, size);
 
         templateEditorPage.getHeaderText('abc123').then(text=>{
+
             expect(text).to.have.css('text-align').to.eq(allignCheck);    
         })
         templateEditorPage.getSpanWithSettings('abc123').then(text=>{
+
             expect(text).to.have.css('font-size').to.eq(size);
             expect(text).to.have.css('font-family').to.eq(font);
         })
         templateEditorPage.getListTagInHeader(listCheck).then(listType=>{
+
             expect(listType).to.exist;
         })
 
-    })
+
+      })
    
 
     settings.forEach(({heading},index) =>{
@@ -64,7 +83,8 @@ describe("Templates", ()=> {
 
         templateEditorPage.editHeading(heading);
         
-        templateEditorPage.getHeadingTag(heading).then(headingTag => {
+        templateEditorPage.getHeadingTag(heading).then(headingTag=>{
+
             expect(headingTag).to.exist;
         })
       })

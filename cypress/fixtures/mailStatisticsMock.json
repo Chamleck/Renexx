@@ -17,7 +17,7 @@
     {
         "title": "Emails Bounced",
         "value": 0,
-        "type": "Bounced"
+        "type": "Bounce"
     },
     {
         "title": "Emails Complaint",
