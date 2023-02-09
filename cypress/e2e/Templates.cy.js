@@ -99,7 +99,8 @@ describe("Templates", ()=> {
 
 
    cy.log("**Сохранение отредактированного темплейта, затем удаление**")
-
+    templateEditorPage.removeLastHeader();
+    templateEditorPage.removeLastFooter();
     mainPage.openTemplatesPage();
     templateEditorPage.savingTemplateByLeavingPage();
     templatesPage.removeTemplate('Custom');
@@ -138,6 +139,10 @@ describe("Templates", ()=> {
     templatesPage.getCustomTemplate('Custom').should('exist');
     templatesPage.clickEditBtn('Custom');
     templateEditorPage.addImage('cypress/fixtures/testFiles/testPic.jpg');
+    templateEditorPage.addDoc('cypress/fixtures/testFiles/testDoc.pdf');
+    templateEditorPage.clickPic();
+    templateEditorPage.clickDoc();
+    cy.get('[title="testDoc.pdf"]',{timeout:2000})
     cy.get('[title="testPic.jpg"]',{timeout:2000});
 
 });

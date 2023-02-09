@@ -8,6 +8,14 @@ class TemplateEditorPage extends BasePage{
         return cy.get('[placeholder="Type subject"]');
     }
 
+    getPic(){
+        return cy.get('[title="testPic.jpg"]');
+    }
+
+    getDoc(){
+        return cy.get('[title="testDoc.pdf"]');
+    }
+
     getShortcutHeaderBtn(){
         return cy.get('.shortcuts').eq(0);
     }
@@ -25,7 +33,7 @@ class TemplateEditorPage extends BasePage{
     }
 
     getAddDocBtn(){
-        return cy.get('span:contains("ADD DOCUMENT")');
+        return cy.get('input[type="file"][accept=".pdf"]');
     }
 
     getClosePreviewBtn(){
@@ -244,6 +252,15 @@ class TemplateEditorPage extends BasePage{
         return cy.get('.mdi-pencil').eq(2);
     }
 
+    getDeleteBtn(){
+        return cy.get('span:contains("Delete")')
+    }
+
+    getSelectLastHeaderFooter(){
+        return cy.get('.modal-content')
+        .find('select')
+    }
+
     getHeaderDeleteBtn(){
         return cy.get('.mdi-delete').eq(1);
     }
@@ -346,6 +363,34 @@ class TemplateEditorPage extends BasePage{
         return cy.get('[data-placeholder="Insert text here ..."]').eq(2);
     }
 
+    removeLastHeader(){
+        cy.log(`**Pushing on Delete Footer Btn**`);
+        this.getHeaderDeleteBtn().click();
+        cy.log(`**Selecting default header**`);
+        this.getSelectLastHeaderFooter().select('default header');
+        cy.log(`**Pushing delete btn**`);
+        this.getDeleteBtn().click();
+    }
+
+    removeLastFooter(){
+        cy.log(`**Pushing on Delete Footer Btn**`);
+        this.getFooterDeleteBtn().click();
+        cy.log(`**Selecting default footer**`);
+        this.getSelectLastHeaderFooter().select('default footer');
+        cy.log(`**Pushing delete btn**`);
+        this.getDeleteBtn().click();
+    }
+
+    clickPic(){
+        cy.log(`**Pushing on picture to add it**`);
+        this.getPic().click();
+    }
+
+    clickDoc(){
+        cy.log(`**Pushing on doc to add it**`);
+        this.getDoc().click();
+    }
+
     clickQuotesBtn(){
         cy.log('**Activating quotes**');
         this.getQuotesBtn().click();
@@ -432,12 +477,14 @@ class TemplateEditorPage extends BasePage{
 
     addImage(file){
         cy.log(`**Adding image*`);
-        this.getAddPicBtn().selectFile(file,{force:true});
+        this.getAddPicBtn().should('be.enabled');
+        this.getAddPicBtn().selectFile(file,{log: true, force: true, timeout: 10000});
     }
 
     addDoc(file){
         cy.log(`**Adding PDF*`);
-        this.getAddDocBtn().attachFile(file);
+        this.getAddDocBtn().should('be.enabled');
+        this.getAddDocBtn().attachFile(file,{log: true, force: true, timeout: 10000});
     }
 
     createTemplateWithHtml(headerText,bodyText,footerText,titleName){
@@ -539,9 +586,6 @@ class TemplateEditorPage extends BasePage{
 
         cy.log(`**Pushing "Yes Svave" on pop up window*`);
         this.getYesSaveBtn().click();
-
-        cy.log(`**Pushing "Edit Existed" on pop up window*`);
-        this.getEditExistedBtn().click();
         
         cy.log(`**Pushing ok button*`);
         this.getOkBtn().click();
