@@ -2,368 +2,372 @@
 
 import BasePage from "./BasePage";
 
-class TemplateEditorPage extends BasePage{
+class TemplateEditorPage extends BasePage {
 
-    getSubjectField(){
+    getSubjectField() {
         return cy.get('[placeholder="Type subject"]');
     }
 
-    getPic(){
+    getPic() {
         return cy.get('[title="testPic.jpg"]');
     }
 
-    getDoc(){
+    getDoc() {
         return cy.get('[title="testDoc.pdf"]');
     }
 
-    getShortcutHeaderBtn(){
+    getShortcutHeaderBtn() {
         return cy.get('.shortcuts').eq(0);
     }
 
-    getShortcutType(shortcut){
+    getShortcutType(shortcut) {
         return cy.get(`span:contains(${shortcut})`);
     }
 
-    getShortcutLinkTextField(){
+    getShortcutLinkTextField() {
         return cy.get('[placeholder="Link text"]');
     }
 
-    getAddPicBtn(){
+    getAddPicBtn() {
         return cy.get('input[type="file"][accept="image/*"]');
     }
 
-    getAddDocBtn(){
+    getAddDocBtn() {
         return cy.get('input[type="file"][accept=".pdf"]');
     }
 
-    getClosePreviewBtn(){
+    getClosePreviewBtn() {
         return cy.get('.modal-close.is-large');
     }
 
-    getAddBtn(){
+    getAddBtn() {
         return cy.get('span:contains("Add")');
     }
+
 // 0 is form, 1 is date, 2 is To, 3 is subject
-    getLetterInfoContainer(info){
+    getLetterInfoContainer(info) {
         return cy.get('.p-2').eq(1)
-        .find('p').eq(`${info}`);
+            .find('p').eq(`${info}`);
     }
 
-    getShortcutInPreview(text){
+    getShortcutInPreview(text) {
         return cy.get(`p a:contains(${text})`);
     }
 
-    getTextInPreview(text){
+    getTextInPreview(text) {
         return cy.get(`p:contains(${text})`);
-    }  
+    }
 
-    getGreetingInPreview(text){
+    getGreetingInPreview(text) {
         return cy.get(`p>strong:contains(${text})`);
     }
 
-    getPreviewWindow(){
+    getPreviewWindow() {
         return cy.get('.template-preview-modal__template');
     }
 
-    getHeaderSelect(){
+    getHeaderSelect() {
         return cy.get('.template-collapse__header').eq(0)
-        .find('select');
+            .find('select');
     }
 
-    getFooterSelect(){
+    getFooterSelect() {
         return cy.get('.template-collapse__header').eq(2)
-        .find('select');
+            .find('select');
     }
 
-    getHeaderUnwarp(){
+    getHeaderUnwarp() {
         return cy.get('.mdi-menu-down.mdi-24px').eq(0);
     }
 
-    getFooterUnwarp(){
+    getFooterUnwarp() {
         return cy.get('.mdi-menu-down.mdi-24px').eq(2);
     }
 
 // h1,h2,h3,h5 итд
-    getHeadingTag(heading){
+    getHeadingTag(heading) {
         return cy.get(`h${heading}`);
     }
 
-    getQuotesTag(){
+    getQuotesTag() {
         return cy.get('blockquote');
     }
 
-    getHighlightedTag(){
+    getHighlightedTag() {
         return cy.get('pre');
     }
 
-    getQuotesBtn(){
+    getQuotesBtn() {
         return cy.get('.ql-formats').eq(9)
-        .find('.ql-blockquote');
+            .find('.ql-blockquote');
     }
 
-    getHighlightBtn(){
+    getHighlightBtn() {
         return cy.get('.ql-formats').eq(9)
-        .find('.ql-code-block');
+            .find('.ql-code-block');
     }
 
-    getFirstXSetting(){
+    getFirstXSetting() {
         return cy.get('.ql-formats').eq(10)
-        .find('[value="sub"]');
+            .find('[value="sub"]');
     }
 
-    getSecondXSetting(){
+    getSecondXSetting() {
         return cy.get('.ql-formats').eq(10)
-        .find('[value="super"]');
+            .find('[value="super"]');
     }
 
-    getHeaderSourceBtn(){
+    getHeaderSourceBtn() {
         return cy.get('.b-radio').eq(0);
     }
 
-    getHeaderTextBtn(){
+    getHeaderTextBtn() {
         return cy.get('.b-radio').eq(1);
     }
 
-    getBodySourceBtn(){
+    getBodySourceBtn() {
         return cy.get('.b-radio').eq(2);
     }
 
-    getBodyTextBtn(){
+    getBodyTextBtn() {
         return cy.get('.b-radio').eq(3);
     }
 
-    getFooterSourceBtn(){
+    getFooterSourceBtn() {
         return cy.get('.b-radio').eq(4);
     }
 
-    getFooterTextBtn(){
+    getFooterTextBtn() {
         return cy.get('.b-radio').eq(5);
     }
 
 
-    getLinkBtn(){
+    getLinkBtn() {
         return cy.get('.ql-link').eq(0);
     }
 
-    getListTagInHeader(listCheck){
+    getListTagInHeader(listCheck) {
         return cy.get('.ql-editor').eq(0)
-        .find(`${listCheck}`);
+            .find(`${listCheck}`);
     }
 
 
-    getHeaderFatText(){
+    getHeaderFatText() {
         return cy.get('.ql-formats').eq(2)
-        .find('.ql-bold');
+            .find('.ql-bold');
     }
 
-    getHeaderLinedText(){
+    getHeaderLinedText() {
         return cy.get('.ql-formats').eq(2)
-        .find('.ql-underline');
+            .find('.ql-underline');
     }
 
-    getHeaderItalicText(){
+    getHeaderItalicText() {
         return cy.get('.ql-formats').eq(2)
-        .find('.ql-italic');
+            .find('.ql-italic');
     }
 
-    getHeaderStrikeText(){
+    getHeaderStrikeText() {
         return cy.get('.ql-formats').eq(2)
-        .find('.ql-strike');
+            .find('.ql-strike');
     }
 
-    getHeaderParagraphBtn(){
+    getHeaderParagraphBtn() {
         return cy.get('.ql-formats').eq(7);
     }
 
-    getHeaderInput(){
+    getHeaderInput() {
         return cy.get('.ql-editor').eq(0);
     }
 
-    getHeaderSourceInput(){
+    getHeaderSourceInput() {
         return cy.get('textarea').eq(0);
     }
 
-    getBodyInput(){
+    getBodyInput() {
         return cy.get('.ql-editor').eq(1);
     }
 
-    getBodySourceInput(){
+    getBodySourceInput() {
         return cy.get('textarea').eq(1);
     }
 
-    getFooterInput(){
+    getFooterInput() {
         return cy.get('.ql-editor').eq(2);
     }
 
-    getFooterSourceInput(){
+    getFooterSourceInput() {
         return cy.get('textarea').eq(2);
     }
 
-    getText(text){
+    getText(text) {
         return cy.get(`p:contains("${text}")`);
     }
 
-    getHeaderText(text){
+    getHeaderText(text) {
         return cy.get(`div.ql-editor`).eq(0)
-        .find(`li:contains("${text}")`);
+            .find(`li:contains("${text}")`);
     }
 
-    getSpanWithSettings(text){
+    getSpanWithSettings(text) {
         return cy.get(`li:contains("${text}")`)
-        .find('span');
+            .find('span');
     }
 
-    getBodyText(text){
+    getBodyText(text) {
         return cy.get(`.ql-editor`).eq(1)
-        .find(`p:contains("${text}")`);
+            .find(`p:contains("${text}")`);
     }
 
-    getFooterText(text){
+    getFooterText(text) {
         return cy.get(`.ql-editor`).eq(2)
-        .find(`p:contains("${text}")`);
+            .find(`p:contains("${text}")`);
     }
 
-    getHeaderSaveBtn(){
+    getHeaderSaveBtn() {
         return cy.get('.template-collapse__header').eq(0)
-        .find('button').eq(0);
+            .find('button').eq(0);
     }
 
-    getTitle(){
+    getTitle() {
         return cy.get('[placeholder="Template title"]');
     }
 
-    getOkBtn(){
+    getOkBtn() {
         return cy.get('button:contains("OK")');
     }
 
-    getYesSaveBtn(){
+    getYesSaveBtn() {
         return cy.get('span:contains("Yes, Save")');
     }
 
-    getEditExistedBtn(){
+    getEditExistedBtn() {
         return cy.get('span:contains("Edit existed")');
     }
 
-    getHeaderEditBtn(){
+    getHeaderEditBtn() {
         return cy.get('.mdi-pencil').eq(1);
     }
 
-    getFooterEditBtn(){
+    getFooterEditBtn() {
         return cy.get('.mdi-pencil').eq(2);
     }
 
-    getDeleteBtn(){
+    getDeleteBtn() {
         return cy.get('span:contains("Delete")')
     }
 
-    getSelectLastHeaderFooter(){
+    getSelectLastHeaderFooter() {
         return cy.get('.modal-content')
-        .find('select')
+            .find('select')
     }
 
-    getHeaderDeleteBtn(){
+    getHeaderDeleteBtn() {
         return cy.get('.mdi-delete').eq(1);
     }
 
-    getFooterDeleteBtn(){
+    getFooterDeleteBtn() {
         return cy.get('.mdi-delete').eq(2);
     }
+
     // 0 is left , 1 is center , 2 is right, 3 is justify
-    getHeaderAllign(allign){
+    getHeaderAllign(allign) {
         return cy.get('.ql-align').eq(`${allign}`);
     }
 
-    getHeaderHeadingSelect(){
+    getHeaderHeadingSelect() {
         return cy.get('.ql-header.ql-picker').eq(0);
     }
 
     // 0 is num list, 1 is dot list
-    getHeaderListType(list){
+    getHeaderListType(list) {
         return cy.get('.ql-list').eq(`${list}`);
     }
 
 
-    getFontPickerHeader(){
+    getFontPickerHeader() {
         return cy.get('.ql-font.ql-picker').eq(0);
     }
 
-    getFontSizePickerHeader(){
+    getFontSizePickerHeader() {
         return cy.get('.ql-size.ql-picker').eq(0);
     }
+
     // 8px  and so on
-    getHeaderFontSize(size){
+    getHeaderFontSize(size) {
         return cy.get(`[data-value="${size}"]`).eq(0);
     }
+
 //Arial //sans //sans-serif //monospace
-    getHeaderFont(font){
+    getHeaderFont(font) {
 
         return cy.get('.ql-picker-options').eq(0)
-        .find(`.ql-picker-item[data-value="${font}"]`);
+            .find(`.ql-picker-item[data-value="${font}"]`);
     }
 
-    getHeaderHeadings(heading){
+    getHeaderHeadings(heading) {
         return cy.get('.ql-picker-options').eq(2)
-        .find(`.ql-picker-item[data-value="${heading}"]`);
+            .find(`.ql-picker-item[data-value="${heading}"]`);
     }
 
-    getFooterSaveBtn(){
+    getFooterSaveBtn() {
         return cy.get('.template-collapse__header').eq(2)
-        .find('button').eq(0);
+            .find('button').eq(0);
     }
 
-    getSaveTemplateBtn(){
+    getSaveTemplateBtn() {
         return cy.get('div .p-2.has-text-white')
-        .find('button').eq(1);
+            .find('button').eq(1);
     }
 
-    getEditLinkForm(){
+    getEditLinkForm() {
         return cy.get('.ql-tooltip').eq(0);
     }
 
-    getLinkField(){
+    getLinkField() {
         return cy.get('[data-formula="e=mc^2"]');
     }
 
-    getSaveLinkBtn(){
+    getSaveLinkBtn() {
         return cy.get('.ql-action').eq(1);
     }
 
-    getCustomLink(){
+    getCustomLink() {
         return cy.get('[href="google.com"]')
     }
 
-    getPreviewBtn(){
+    getPreviewBtn() {
         return cy.get('div .p-2.has-text-white')
-        .find('button').eq(0);
+            .find('button').eq(0);
     }
 
-    getAmazonOrderNumField(){
+    getAmazonOrderNumField() {
         return cy.get('[placeholder="Amazon Order Number..."]');
     }
 
-    getHeaderSaveOptions(){
+    getHeaderSaveOptions() {
         return cy.get('.template-collapse__header').eq(0)
-        .find('.mdi-menu-down');
+            .find('.mdi-menu-down');
     }
 
-    getFooterSaveOptions(){
+    getFooterSaveOptions() {
         return cy.get('.template-collapse__header').eq(1)
-        .find('.mdi-menu-down');
+            .find('.mdi-menu-down');
     }
 
-    getHeaderPlaceholder(){
+    getHeaderPlaceholder() {
         return cy.get('[data-placeholder="Insert text here ..."]').eq(0);
     }
 
-    getBodyPlaceholder(){
+    getBodyPlaceholder() {
         return cy.get('[data-placeholder="Insert text here ..."]').eq(1);
     }
 
-    getFooterPlaceholder(){
+    getFooterPlaceholder() {
         return cy.get('[data-placeholder="Insert text here ..."]').eq(2);
     }
 
-    removeLastHeader(){
+    removeLastHeader() {
         cy.log(`**Pushing on Delete Footer Btn**`);
         this.getHeaderDeleteBtn().click();
         cy.log(`**Selecting default header**`);
@@ -372,7 +376,7 @@ class TemplateEditorPage extends BasePage{
         this.getDeleteBtn().click();
     }
 
-    removeLastFooter(){
+    removeLastFooter() {
         cy.log(`**Pushing on Delete Footer Btn**`);
         this.getFooterDeleteBtn().click();
         cy.log(`**Selecting default footer**`);
@@ -381,45 +385,46 @@ class TemplateEditorPage extends BasePage{
         this.getDeleteBtn().click();
     }
 
-    clickPic(){
+    clickPic() {
         cy.log(`**Pushing on picture to add it**`);
         this.getPic().click();
     }
 
-    clickDoc(){
+    clickDoc() {
         cy.log(`**Pushing on doc to add it**`);
         this.getDoc().click();
     }
 
-    clickQuotesBtn(){
+    clickQuotesBtn() {
         cy.log('**Activating quotes**');
         this.getQuotesBtn().click();
     }
 
-    clickHighlightingBtn(){
+    clickHighlightingBtn() {
         cy.log('**Activating highlighting**');
         this.getHighlightBtn().click();
     }
 
-    clickFirstXSetting(){
+    clickFirstXSetting() {
         cy.log('**Activating X setting number 1**');
         this.getFirstXSetting().click();
     }
 
-    clickSecondXSetting(){
+    clickSecondXSetting() {
         cy.log('**Activating X setting number 2**');
         this.getSecondXSetting().click();
     }
-    activatingLink(){
+
+    activatingLink() {
         ('**Clicking link button**');
         this.getLinkBtn().click();
         ('**Typing the link adress**');
-        this.getLinkField().invoke('css','display: inline-block;').click().type('google.com',{force:true});
+        this.getLinkField().invoke('css', 'display: inline-block;').click().type('google.com', {force: true});
         ('**Saving link**');
         this.getSaveLinkBtn().click();
     }
 
-    createTemplate(text,titleName){
+    createTemplate(text, titleName) {
         cy.log('**Filling subject field**');
         this.getSubjectField().type('Hello');
 
@@ -475,19 +480,19 @@ class TemplateEditorPage extends BasePage{
         this.getOkBtn().click();
     }
 
-    addImage(file){
+    addImage(file) {
         cy.log(`**Adding image*`);
         this.getAddPicBtn().should('be.enabled');
-        this.getAddPicBtn().selectFile(file,{log: true, force: true, timeout: 10000});
+        this.getAddPicBtn().selectFile(file, {log: true, force: true, timeout: 10000});
     }
 
-    addDoc(file){
+    addDoc(file) {
         cy.log(`**Adding PDF*`);
         this.getAddDocBtn().should('be.enabled');
-        this.getAddDocBtn().attachFile(file,{log: true, force: true, timeout: 10000});
+        this.getAddDocBtn().selectFile(file, {log: true, force: true, timeout: 10000});
     }
 
-    createTemplateWithHtml(headerText,bodyText,footerText,titleName){
+    createTemplateWithHtml(headerText, bodyText, footerText, titleName) {
         cy.log('**Filling subject field**');
         this.getSubjectField().type('Hello');
 
@@ -549,7 +554,7 @@ class TemplateEditorPage extends BasePage{
         this.getOkBtn().click();
     }
 
-    saveTemplate(titleName){
+    saveTemplate(titleName) {
         cy.log(`**Saving template*`);
         this.getSaveTemplateBtn().click();
 
@@ -563,12 +568,12 @@ class TemplateEditorPage extends BasePage{
         this.getOkBtn().click();
     }
 
-    openPreview(){
+    openPreview() {
         cy.log(`**Clicking preview btn*`);
         this.getPreviewBtn().click()
     }
 
-    addShortcut(shortcut,linkText){
+    addShortcut(shortcut, linkText) {
         cy.log(`**Clicking on shortcut btn*`);
         this.getShortcutHeaderBtn().click();
 
@@ -582,16 +587,16 @@ class TemplateEditorPage extends BasePage{
         this.getAddBtn().click();
     }
 
-    savingTemplateByLeavingPage(){
+    savingTemplateByLeavingPage() {
 
         cy.log(`**Pushing "Yes Svave" on pop up window*`);
         this.getYesSaveBtn().click();
-        
+
         cy.log(`**Pushing ok button*`);
         this.getOkBtn().click();
     }
 
-    savingEditedHeader(){
+    savingEditedHeader() {
         cy.log(`**Saving new Header**`);
         this.getHeaderSaveBtn().click();
 
@@ -599,18 +604,18 @@ class TemplateEditorPage extends BasePage{
         this.getEditExistedBtn().click();
     }
 
-    typeTextInHeader(text){
+    typeTextInHeader(text) {
         cy.log(`**Adding ${text} to header**`);
         this.getHeaderInput().clear().type(`${text},{selectAll}`);
     }
 
-    unwarpHeader(){
+    unwarpHeader() {
 
         cy.log('**Unwarping Header**');
         this.getHeaderUnwarp().click();
     }
 
-    editHeader(font,allign,list,size){
+    editHeader(font, allign, list, size) {
 
         cy.log('**Opening fonts dropdown**');
         this.getFontPickerHeader().click();
@@ -631,14 +636,14 @@ class TemplateEditorPage extends BasePage{
         this.getHeaderListType(list).click();
     }
 
-    editHeading(heading){
+    editHeading(heading) {
         cy.log(`**Clicking on heding selector**`);
         this.getHeaderHeadingSelect().click();
         cy.log(`**Selecting heading option ${heading}**`);
         this.getHeaderHeadings(heading).click();
     }
 
-    editTextStyle(heading){
+    editTextStyle(heading) {
         cy.log(`**Clearing the text**`);
         this.getHeadingTag(heading).click().clear();
 
@@ -656,17 +661,16 @@ class TemplateEditorPage extends BasePage{
 
         cy.log(`**Typing new text with new settings**`);
         this.getHeadingTag(heading).type('abc123');
-        
+
         cy.log(`**Turning on paragraph option**`);
         this.getHeaderParagraphBtn().click()
     }
 
-    closePreview(){
+    closePreview() {
         cy.log(`**Closing preview**`);
-        this.getClosePreviewBtn().click();  
+        this.getClosePreviewBtn().click();
     }
 
-    
 
 }
 
