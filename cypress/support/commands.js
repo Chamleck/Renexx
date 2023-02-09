@@ -34,7 +34,7 @@ Cypress.Commands.add('login', (id, username = 'admin@gmail.com', password = 'vI3
       cy.get('[type="password"]').type(password);
       cy.get('span:contains(" LOG IN ")').click().wait(2000);
   }, {
-    //вмикаэмо налаштування щоб кеш зберыгався помыж сесіями
+    //вмикаэмо налаштування щоб кеш зберігався поміж сесіями
       cacheAcrossSpecs: true,
   })
 });

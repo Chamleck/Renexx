@@ -138,7 +138,6 @@ describe("Templates", ()=> {
     templatesPage.getCustomTemplate('Custom').should('exist');
     templatesPage.clickEditBtn('Custom');
     templateEditorPage.addImage('cypress/fixtures/testFiles/testPic.jpg');
-    cy.wait(10000);
     cy.get('[title="testPic.jpg"]',{timeout:2000});
 
 });
