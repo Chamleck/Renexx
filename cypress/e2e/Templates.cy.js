@@ -108,10 +108,11 @@ describe("Templates", ()=> {
 
 });
 
- it("**Создание темплейта с помощью HTML, добавление шорткатов, проверка превью**",()=>{
+ it("Создание темплейта с помощью HTML, добавление шорткатов, проверка превью",()=>{
 
-    cy.login('testId')
-    cy.visit('https://emails-dev.alpha-pram.com/templates/')
+    cy.login('testId');
+    cy.visit('https://emails-dev.alpha-pram.com/templates/');
+
     templatesPage.getDefaultTemplate().should('exist');
     templatesPage.addNewTemplate();
     templateEditorPage.createTemplateWithHtml(html.header,html.body,html.footer,'Custom');
@@ -137,6 +138,15 @@ describe("Templates", ()=> {
     templateEditorPage.savingEditedHeader();
     templateEditorPage.saveTemplate('Custom');
     templatesPage.getCustomTemplate('Custom').should('exist');
+
+ })
+
+it("Добавление файлов в HTML темплейт, проверка наличия файлов в превью",()=>{
+
+    cy.login('testId');
+    cy.visit('https://emails-dev.alpha-pram.com/templates/');
+
+    templatesPage.getCustomTemplate('Custom').should('exist');
     templatesPage.clickEditBtn('Custom');
     templateEditorPage.addImage('cypress/fixtures/testFiles/testPic.jpg');
     templateEditorPage.addDoc('cypress/fixtures/testFiles/testDoc.pdf');
@@ -145,6 +155,6 @@ describe("Templates", ()=> {
     cy.get('[title="testDoc.pdf"]',{timeout:2000})
     cy.get('[title="testPic.jpg"]',{timeout:2000});
 
-});
+  });
 
 });
