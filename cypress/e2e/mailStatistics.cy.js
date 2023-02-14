@@ -6,13 +6,15 @@ import mainPage from '../support/Pages/MainPage';
 
 
 describe("Actions with Companies", () => {
-  beforeEach(() => {
-  cy.restoreLocalStorage();
+  before(() => {
+    cy.login('testId');
   });
 
-  it("login", login);
 
   it('Mocking', () => {
+    cy.login('testId');
+    cy.visit('https://emails-dev.alpha-pram.com/');
+    
     const newValues = changeValues();
     mockStatistics(newValues);
     cy.log(JSON.stringify(newValues));

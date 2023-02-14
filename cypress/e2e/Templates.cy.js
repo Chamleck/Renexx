@@ -10,7 +10,6 @@ import settings from '../fixtures/templateSettings.json';
 describe("Templates", () => {
 
     before(() => {
-
         cy.login('testId')
     })
 
@@ -146,7 +145,7 @@ describe("Templates", () => {
         templatesPage.getCustomTemplate('Custom').should('exist');
         templatesPage.clickEditBtn('Custom');
         templateEditorPage.addImage('cypress/fixtures/testFiles/testPic.jpg');
-        templateEditorPage.addDoc('cypress/fixtures/testFiles/testdoc.pdf');
+        templateEditorPage.addDoc('cypress/fixtures/testFiles/testDoc.pdf');
         templateEditorPage.clickPic();
         templateEditorPage.clickDoc();
         cy.get('[title="testDoc.pdf"]', {timeout: 2000})

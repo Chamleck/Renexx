@@ -9,9 +9,8 @@ import mainPage from '../support/Pages/MainPage';
 describe("Companies test", ()=> {
 
     before(() => {
-
-    cy.login('testId')
-  })
+        cy.login('testId');
+    })
         
         
     

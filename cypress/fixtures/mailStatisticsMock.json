@@ -15,7 +15,7 @@
         "type": "Open"
     },
     {
-        "title": "Emails Bounced",
+        "title": "Emails Bounce",
         "value": 0,
         "type": "Bounce"
     },
