@@ -9,7 +9,7 @@ class TemplateEditorPage extends BasePage {
     }
 
     getPic() {
-        return cy.get('[title="testPic.jpg"]');
+        return cy.get('[title="testPic.png"]');
     }
 
     getDoc() {
@@ -56,6 +56,15 @@ class TemplateEditorPage extends BasePage {
 
     getTextInPreview(text) {
         return cy.get(`p:contains(${text})`);
+    }
+
+    getDocInPreview(docName) {
+        return cy.get(`a:contains(${docName})`);
+    }
+
+    getPicInPreview() {
+        return cy.get('strong:contains("Hello Dear Customer!")')
+        .find('img');
     }
 
     getGreetingInPreview(text) {
@@ -257,6 +266,10 @@ class TemplateEditorPage extends BasePage {
         return cy.get('span:contains("Delete")')
     }
 
+    getToastr(text) {
+        return cy.get(`p:contains(${text})`);
+    }
+
     getSelectLastHeaderFooter() {
         return cy.get('.modal-content')
             .find('select')
@@ -268,6 +281,10 @@ class TemplateEditorPage extends BasePage {
 
     getFooterDeleteBtn() {
         return cy.get('.mdi-delete').eq(2);
+    }
+    // 0 is pic, 1 is doc
+    getDeleteFileIcon(picOrDoc) {
+        return cy.get('.mdi-delete-forever').eq(`${picOrDoc}`)
     }
 
     // 0 is left , 1 is center , 2 is right, 3 is justify
@@ -365,6 +382,14 @@ class TemplateEditorPage extends BasePage {
 
     getFooterPlaceholder() {
         return cy.get('[data-placeholder="Insert text here ..."]').eq(2);
+    }
+
+    removePicOrDoc(picOrDoc){
+        cy.log(`**Pushing on Delete icon**`);
+        this.getDeleteFileIcon(picOrDoc).as('btn').click();
+        cy.log(`**Pushing on Ok Btn**`);
+        this.getOkBtn().click();
+
     }
 
     removeLastHeader() {

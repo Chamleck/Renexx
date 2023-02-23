@@ -31,8 +31,8 @@ describe("Templates", function () {
     cy.wait('@id').then((request)=>{
     cy.log(JSON.stringify(request.response.body.id))
     let id = request.response.body.id
-   // cy.task('setMyUniqueId', id)
-   cy.setId(id)
+    // cy.task('setMyUniqueId', id)
+    cy.setId(id)
 })
     });
 

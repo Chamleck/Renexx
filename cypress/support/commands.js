@@ -24,19 +24,31 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import 'cypress-file-upload'
+import sessionData from '../fixtures/sessionData.json'
 //додаємо команду логін яка буде зберігати данні сесії, в дужках треба додати id як аргумент
 // а також юзернейм та пароль
 Cypress.Commands.add('login', (id, username = 'admin@gmail.com', password = 'vI3iT581Lrh&') => {
+//создаем объект который называем requestBody в этом объекте есть значение user: в котором хранится еще один объект с пустыми email: и password:
+let requestBody = {email: "", password: ""};
+//тут обращаемся к значению email в созданной переменной requestBody и задаем значение из файла user
+     requestBody.email = username;
+     requestBody.password = password;  
 //в cy.session передаэмо id
   cy.session(id, () => {
-      cy.visit('/')
-      cy.get('[type="email"]').type(username);
-      cy.get('[type="password"]').type(password);
-      cy.get('span:contains(" LOG IN ")').click().wait(2000);
+ //тут делаем реквест с методом POST, с эндпоинтом /api/users/login и с нашим объектом который хранится в переменной requestBody
+  cy.request('POST', 'https://emails-dev-api.alpha-pram.com/user/auth/login', requestBody).then( response => {
+  // тут создаем переменную token которая получит значение из тела ответа в котором у юзера есть еще токен
+  let token = response.body.accessToken;
+  // сетим этот токен в localStorage
+  window.localStorage.setItem('accessToken', token)
+    
+  // командой window обращаемся к localStorage, командой setItem в скобках указываем ключ и значение которое из джейсона преобразуем в строку
+  window.localStorage.setItem('storeId', sessionData.storeId);  
   }, {
     //вмикаэмо налаштування щоб кеш зберігався поміж сесіями
-      cacheAcrossSpecs: true,
+    cacheAcrossSpecs: true,
   })
+ })
 });
 
 //команди аналогічні тасці яка знаходиться в сайпрес конфіг

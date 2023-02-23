@@ -5,6 +5,7 @@ import mainPage from '../support/Pages/MainPage';
 import templatesPage from '../support/Pages/TemplatesPage';
 import templateEditorPage from '../support/Pages/TemplateEditorPage.js';
 import settings from '../fixtures/templateSettings.json';
+import { loginViaAPI } from '../support/helper.js';
 
 
 describe("Templates", () => {
@@ -144,12 +145,23 @@ describe("Templates", () => {
 
         templatesPage.getCustomTemplate('Custom').should('exist');
         templatesPage.clickEditBtn('Custom');
-        templateEditorPage.addImage('cypress/fixtures/testFiles/testPic.jpg');
+        templateEditorPage.addImage('cypress/fixtures/testFiles/testPic.png');
         templateEditorPage.addDoc('cypress/fixtures/testFiles/testDoc.pdf');
         templateEditorPage.clickPic();
         templateEditorPage.clickDoc();
-        cy.get('[title="testDoc.pdf"]', {timeout: 2000})
-        cy.get('[title="testPic.jpg"]', {timeout: 2000});
+        templateEditorPage.getPic()
+        .should('exist');
+        templateEditorPage.getDoc()
+        .should('exist');
+        templateEditorPage.openPreview();
+        templateEditorPage.getDocInPreview('testDoc.pdf').should('exist');
+        templateEditorPage.getPicInPreview().should('exist');
+        templateEditorPage.closePreview();
+        templateEditorPage.removePicOrDoc(1);
+        templateEditorPage.removePicOrDoc(0);
+        templateEditorPage.getToastr('File Deleted!').should('exist');
+        mainPage.openTemplatesPage();
+        templateEditorPage.savingTemplateByLeavingPage();
 
     });
 

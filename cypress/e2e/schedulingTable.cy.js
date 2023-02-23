@@ -5,7 +5,7 @@ import mainPage from '../support/Pages/MainPage';
 import scheduling from'../fixtures/schedulingTableMock.json';
 
 
-describe("Actions with Companies", () => {
+describe("Testing of scheduling table", () => {
   before(() => {
     cy.login('testId');
   });
