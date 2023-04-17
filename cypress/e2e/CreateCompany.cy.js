@@ -6,37 +6,44 @@ import campaignEditorPage from '../support/Pages/CampaignEditorPage';
 import btns from '../fixtures/radioBtns.json';
 
 describe("create Company", function () {
-    beforeEach(() => {
-        cy.restoreLocalStorage();
+    before(() => {
+        cy.login('testId');
     });
 
-    it("login", login);
+  
 
 
     it("Тест создания компании", () => {
+    cy.login('testId');
+    cy.visit('https://emails-dev.alpha-pram.com/');
 
     createCampaign('Test','Template','Description','chamlecks@gmail.com')
 })
 
 it("Тест редактирования кампании", ()=>{
-    campaignsPage.pushEditCampaignButton('Test')
-    campaignEditorPage.selectDelay('1 day')
-    campaignEditorPage.selectTiming('12:00 PM')
-    campaignEditorPage.clickAddRule()
-    campaignEditorPage.clickSpecificBrandRule()
-    campaignEditorPage.addSpecificBrand('DEWALT')
-    campaignEditorPage.clickAddRule()
-    campaignEditorPage.clickSpecificProductRule()
-    campaignEditorPage.addSpecificProduct('AC123')
-    campaignEditorPage.selectRadioBtn(btns.contain)
+    cy.login('testId');
+    cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
+
+    campaignsPage.pushEditCampaignButton('Test');
+    campaignEditorPage.selectDelay('1 day');
+    campaignEditorPage.selectTiming('12:00 PM');
+    campaignEditorPage.clickAddRule();
+    campaignEditorPage.clickSpecificBrandRule();
+    campaignEditorPage.addSpecificBrand('DEWALT');
+    campaignEditorPage.clickAddRule();
+    campaignEditorPage.clickSpecificProductRule();
+    campaignEditorPage.addSpecificProduct('AC123');
+    campaignEditorPage.selectRadioBtn(btns.contain);
     campaignEditorPage.getRadioBtn(btns.contain)
     .should('be.enabled')
-    campaignEditorPage.clickSaveBtn()
+    campaignEditorPage.clickSaveBtn();
     
 })
 
 it("Тест удаления компании", () => {
+    cy.login('testId');
+    cy.visit('https://emails-dev.alpha-pram.com/campaigns/');
 
-    removeCampaign('Test')
+    removeCampaign('Test');
 })
 })

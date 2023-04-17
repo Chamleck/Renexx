@@ -5,17 +5,18 @@ import mainPage from '../support/Pages/MainPage';
 import scheduling from'../fixtures/schedulingTableMock.json';
 
 
-describe("Actions with Companies", () => {
-  beforeEach(() => {
-  cy.restoreLocalStorage();
+describe("Testing of scheduling table", () => {
+  before(() => {
+    cy.login('testId');
   });
 
-  it("login", login);
 
   it('Mocking Scheduling table', () => {
-    
-        mainPage.openSchedulingPage()
-        mockSchedulingTable(scheduling)
+       cy.login('testId');
+       cy.visit('https://emails-dev.alpha-pram.com/');
+
+        mainPage.openSchedulingPage();
+        mockSchedulingTable(scheduling);
         
         
     })

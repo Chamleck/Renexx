@@ -28,21 +28,46 @@ export function loginViaAPI(user){
     })
 };
 
+export function loginSessionViaAPI(id, username = 'admin@gmail.com', password = 'vI3iT581Lrh&'){
+    //создаем объект который называем requestBody в этом объекте есть значение user: в котором хранится еще один объект с пустыми email: и password:
+    let requestBody = {email: "", password: ""};
+//тут обращаемся к значению email в созданной переменной requestBody и задаем значение из аргумента функции
+     requestBody.email = username;
+     requestBody.password = password;
+    
+    //тут делаем реквест с методом POST, с эндпоинтом /api/users/login и с нашим объектом который хранится в переменной requestBody
+    cy.session(id, () => {
+    cy.request('POST', 'https://emails-dev-api.alpha-pram.com/user/auth/login', requestBody).then( response => {
+
+// тут создаем переменную token которая получит значение из тела ответа в котором у юзера есть еще токен
+        let token = response.body.accessToken;
+// сетим этот токен в localStorage
+        window.localStorage.setItem('accessToken', token)
+
+// командой window обращаемся к localStorage, командой setItem в скобках указываем ключ и значение которое из джейсона преобразуем в строку
+        window.localStorage.setItem('storeId', sessionData.storeId);
+    }), {
+    //вмикаэмо налаштування щоб кеш зберігався поміж сесіями
+    cacheAcrossSpecs: true,    
+    }
+  })
+};
+
+
 
  export function login() {
-    
+
+        cy.session( () => {
 
         cy.visit('/');
 
         cy.get('[type="email"]').type('admin@gmail.com');
 
-        cy.get('[type="password"]').type('vI3iT581Lrh&');
+        cy.get('[type="password"]').type('vI3iT581Lrh&vI3iT581Lrh&');
 
-        cy.get('span:contains(" LOG IN ")').click().wait(3000).then(() => {
-
-        cy.saveLocalStorage(localStorage);
+        cy.get('span:contains(" LOG IN ")').click().wait(3000)
         })
-   
+    
 };
 
 export function createCampaign(campaignName,template,description,email){
@@ -125,6 +150,8 @@ cy.intercept('GET', '**/scheduling/orders?page=1&limit=20', data);
 cy.reload();
 
 };
+
+
 
 
 

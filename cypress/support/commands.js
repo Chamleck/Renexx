@@ -23,6 +23,65 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import 'cypress-file-upload'
+import sessionData from '../fixtures/sessionData.json'
+//додаємо команду логін яка буде зберігати данні сесії, в дужках треба додати id як аргумент
+// а також юзернейм та пароль
+Cypress.Commands.add('login', (id, username = 'admin@gmail.com', password = 'vI3iT581Lrh&') => {
+//создаем объект который называем requestBody в этом объекте есть значение user: в котором хранится еще один объект с пустыми email: и password:
+let requestBody = {email: "", password: ""};
+//тут обращаемся к значению email в созданной переменной requestBody и задаем значение из файла user
+     requestBody.email = username;
+     requestBody.password = password;  
+//в cy.session передаэмо id
+  cy.session(id, () => {
+ //тут делаем реквест с методом POST, с эндпоинтом /api/users/login и с нашим объектом который хранится в переменной requestBody
+  cy.request('POST', 'https://emails-dev-api.alpha-pram.com/user/auth/login', requestBody).then( response => {
+  // тут создаем переменную token которая получит значение из тела ответа в котором у юзера есть еще токен
+  let token = response.body.accessToken;
+  // сетим этот токен в localStorage
+  window.localStorage.setItem('accessToken', token)
+    
+  // командой window обращаемся к localStorage, командой setItem в скобках указываем ключ и значение которое из джейсона преобразуем в строку
+  window.localStorage.setItem('storeId', sessionData.storeId);  
+  }, {
+    //вмикаэмо налаштування щоб кеш зберігався поміж сесіями
+    cacheAcrossSpecs: true,
+  })
+ })
+});
+
+//команди аналогічні тасці яка знаходиться в сайпрес конфіг
+//об'являємо порожню змінну 
+let id
+//в цій команді присвоюємо змінній id значання яке в аргументі команди
+Cypress.Commands.add('setId',(value) =>{
+ id = value
+ //повертаємо id
+ return id
+})
+//команда щоб дістати id просто повертає id який був наданий в попередній команді
+Cypress.Commands.add('getId',() =>{
+ return id
+})
+
+
+
+Cypress.Commands.add('uploadFile', { prevSubject: true }, (subject, fixturePath, mimeType) => {
+  cy.fixture(fixturePath, 'base64').then(content => {
+    Cypress.Blob.base64StringToBlob(content, mimeType).then((blob) => {
+      const testfile = new File([blob], fixturePath, { type: mimeType });
+      const dataTransfer = new DataTransfer();
+      const fileInput = subject[0];
+
+      dataTransfer.items.add(testfile);
+      fileInput.files = dataTransfer.files;
+
+      cy.wrap(subject).trigger('change', { force: true });
+    });
+  });
+})
+
 const LOCAL_STORAGE_MEMORY = {};
 
 function localStorageRestore() {
@@ -79,6 +138,8 @@ Cypress.Commands.add("exist", (selector) => {
       })
     })
   });
+
+  
 
 //   cy.exist('.mat-radio-outer-circle').then(exists => {
             
