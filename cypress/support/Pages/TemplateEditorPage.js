@@ -258,6 +258,14 @@ class TemplateEditorPage extends BasePage {
         return cy.get('.mdi-pencil').eq(1);
     }
 
+    getTemplateEditBtn(){
+        return cy.get('.mdi-pencil').eq(0);
+    }
+
+    getTemplateHeaderFooterNameField() {
+        return cy.get('.input').eq(1);
+    }
+
     getFooterEditBtn() {
         return cy.get('.mdi-pencil').eq(2);
     }
@@ -362,14 +370,37 @@ class TemplateEditorPage extends BasePage {
         return cy.get('[placeholder="Amazon Order Number..."]');
     }
 
+    getTemplateSaveOptions(){
+        return cy.get('.mdi-menu-down').eq(1);
+    }
+    //Save for saving or Proceed to continue without saving changes
+    getSaveOption(option){
+        return cy.get(`span:contains(${option})`);
+    }
+
+
+    getTemplateSaveCopyBtn(){
+        return cy.get('.dropdown-item').eq(4);
+    }
+
+    getCreateCopyBtn(){
+        return cy.get('span:contains("Create copy")');
+    }
+
     getHeaderSaveOptions() {
-        return cy.get('.template-collapse__header').eq(0)
-            .find('.mdi-menu-down');
+        return cy.get('.mdi-menu-down').eq(2);
     }
 
     getFooterSaveOptions() {
-        return cy.get('.template-collapse__header').eq(1)
-            .find('.mdi-menu-down');
+        return cy.get('.mdi-menu-down').eq(5);
+    }
+
+    getHeaderCreateCopyBtn(){
+        return cy.get('span:contains(" Create copy ")').first();
+    }
+
+    getFooterCreateCopyBtn(){
+        return cy.get('span:contains(" Create copy ")').last();
     }
 
     getHeaderPlaceholder() {
@@ -382,6 +413,100 @@ class TemplateEditorPage extends BasePage {
 
     getFooterPlaceholder() {
         return cy.get('[data-placeholder="Insert text here ..."]').eq(2);
+    }
+
+    getTemplateSelector(){
+        return cy.get('.is-flex.has-background-dark')
+        .find('select');
+    }
+
+    saveTemplateAsCopy(option){
+        cy.log(`**Opening save options dropdown**`);
+        this.getTemplateSaveOptions().click();
+        cy.log(`**Pushing "Save as copy" button**`);
+        this.getTemplateSaveCopyBtn().click();
+        cy.log(`**Pushing ${option} Btn**`);
+        this.getSaveOption(option).click();
+        //window.addEventListener("DOMContentLoaded", () => {
+        cy.exist('.modal-content').then(exists => {
+        if (exists) {
+        cy.log(`**Pushing "Create copy" Btn for footer**`);
+        this.getFooterCreateCopyBtn().click();
+        cy.log(`**Pushing "Create copy" Btn for header**`);
+        this.getHeaderCreateCopyBtn().click();
+        cy.log(`**Pushing "OK" Btn**`);
+        this.getOkBtn().click();
+        cy.log(`**Pushing "OK" Btn**`);
+        this.getOkBtn().click();
+        }
+        else {
+            cy.log(`**All saved**`)
+        }
+         })
+    // })
+    }      
+
+    editTemplateName(name){
+        cy.log(`**Pushing edit template name Btn**`);
+        this.getTemplateEditBtn().click();
+        cy.log(`**Typing ${name} to name field**`);
+        this.getTemplateHeaderFooterNameField().clear().type(name);
+        cy.log(`**Pushing on Ok Btn**`);
+        this.getOkBtn().click();
+    }
+
+    editHeaderName(name){
+        cy.log(`**Pushing edit header name Btn**`);
+        this.getHeaderEditBtn().click();
+        cy.log(`**Typing ${name} to name field**`);
+        this.getTemplateHeaderFooterNameField().clear().type(name);
+        cy.log(`**Pushing on Ok Btn**`);
+        this.getOkBtn().click();
+    }
+
+    editFooterName(name){
+        cy.log(`**Pushing edit footer name Btn**`);
+        this.getFooterEditBtn().click();
+        cy.log(`**Typing ${name} to name field**`);
+        this.getTemplateHeaderFooterNameField().clear().type(name);
+        cy.log(`**Pushing on Ok Btn**`);
+        this.getOkBtn().click();
+    }
+
+    editTextInTemplate(text){
+        cy.log(`**Typing ${text} in header footer and body**`);
+        this.getHeaderInput().clear().type(text);
+        this.getBodyInput().clear().type(text);
+        this.getFooterInput().clear().type(text);
+    }
+    
+    selectTemplate(template){
+        cy.log(`**Selecting ${template} template*`);
+        this.getTemplateSelector().select(template);
+    }
+
+    selectHeader(header){
+        cy.log(`**Selecting ${header} header*`);
+        this.getHeaderSelect().select(header);
+    }
+
+    removeHeader(header){
+        cy.log(`**Selecting ${header} header*`);
+        this.getHeaderSelect().select(header);
+        cy.log(`**Pushing delete pencil**`);
+        this.getHeaderDeleteBtn().click();
+    }
+
+    selectFooter(footer){
+        cy.log(`**Selecting ${footer} header*`);
+        this.getFooterSelect().select(footer);
+    }
+
+    removeFooter(footer){
+        cy.log(`**Selecting ${footer} header*`);
+        this.getFooterSelect().select(footer)
+        cy.log(`**Pushing delete pencil**`);
+        this.getFooterDeleteBtn().click();
     }
 
     removePicOrDoc(picOrDoc){
@@ -480,7 +605,7 @@ class TemplateEditorPage extends BasePage {
         cy.log(`**Adding ${titleName} to title field**`);
         this.getTitle().type(titleName);
 
-        cy.log(`**Pushing ok button*`);
+        cy.log(`**Pushing ok button**`);
         this.getOkBtn().click();
 
         cy.log(`**Saving new Footer**`);
@@ -489,19 +614,19 @@ class TemplateEditorPage extends BasePage {
         cy.log(`**Adding ${titleName} to title field**`);
         this.getTitle().type(titleName);
 
-        cy.log(`**Pushing ok button*`);
+        cy.log(`**Pushing ok button**`);
         this.getOkBtn().click();
 
-        cy.log(`**Saving template*`);
+        cy.log(`**Saving template**`);
         this.getSaveTemplateBtn().click();
 
-        cy.log(`**Pushing ok button*`);
+        cy.log(`**Pushing ok button**`);
         this.getOkBtn().click();
 
         cy.log(`**Adding ${titleName} to title field**`);
         this.getTitle().type(titleName);
 
-        cy.log(`**Pushing ok button*`);
+        cy.log(`**Pushing ok button**`);
         this.getOkBtn().click();
     }
 
@@ -599,25 +724,25 @@ class TemplateEditorPage extends BasePage {
     }
 
     addShortcut(shortcut, linkText) {
-        cy.log(`**Clicking on shortcut btn*`);
+        cy.log(`**Clicking on shortcut btn**`);
         this.getShortcutHeaderBtn().click();
 
-        cy.log(`**Selecting shortcut type*`);
+        cy.log(`**Selecting shortcut type**`);
         this.getShortcutType(shortcut).click();
 
-        cy.log(`**Adding link text*`);
+        cy.log(`**Adding link text**`);
         this.getShortcutLinkTextField().clear().type(`${linkText}`);
 
-        cy.log(`**Pushing add btn*`);
+        cy.log(`**Pushing add btn**`);
         this.getAddBtn().click();
     }
 
     savingTemplateByLeavingPage() {
 
-        cy.log(`**Pushing "Yes Svave" on pop up window*`);
+        cy.log(`**Pushing "Yes Svave" on pop up window**`);
         this.getYesSaveBtn().click();
 
-        cy.log(`**Pushing ok button*`);
+        cy.log(`**Pushing ok button**`);
         this.getOkBtn().click();
     }
 
@@ -625,7 +750,7 @@ class TemplateEditorPage extends BasePage {
         cy.log(`**Saving new Header**`);
         this.getHeaderSaveBtn().click();
 
-        cy.log(`**Pushing "Edit Existed" on pop up window*`);
+        cy.log(`**Pushing "Edit Existed" on pop up window**`);
         this.getEditExistedBtn().click();
     }
 
@@ -638,6 +763,12 @@ class TemplateEditorPage extends BasePage {
 
         cy.log('**Unwarping Header**');
         this.getHeaderUnwarp().click();
+    }
+
+    unwarpFooter() {
+
+        cy.log('**Unwarping Footer**');
+        this.getFooterUnwarp().click();
     }
 
     editHeader(font, allign, list, size) {

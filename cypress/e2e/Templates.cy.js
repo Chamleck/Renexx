@@ -5,13 +5,12 @@ import mainPage from '../support/Pages/MainPage';
 import templatesPage from '../support/Pages/TemplatesPage';
 import templateEditorPage from '../support/Pages/TemplateEditorPage.js';
 import settings from '../fixtures/templateSettings.json';
-import { loginViaAPI } from '../support/helper.js';
 
 
 describe("Templates", () => {
 
     before(() => {
-        cy.login('testId')
+        cy.login('testId');
     })
 
     it("Создание темплейта", () => {
@@ -26,7 +25,7 @@ describe("Templates", () => {
     });
 
 
-    it("Открытие созданного темплейта", () => {
+    it("Открытие созданного темплейта и редактирование", () => {
         cy.login('testId');
         cy.visit(`https://emails-dev.alpha-pram.com/templates`);
 
@@ -149,10 +148,8 @@ describe("Templates", () => {
         templateEditorPage.addDoc('cypress/fixtures/testFiles/testDoc.pdf');
         templateEditorPage.clickPic();
         templateEditorPage.clickDoc();
-        templateEditorPage.getPic()
-        .should('exist');
-        templateEditorPage.getDoc()
-        .should('exist');
+        templateEditorPage.getPic().should('exist');
+        templateEditorPage.getDoc().should('exist');
         templateEditorPage.openPreview();
         templateEditorPage.getDocInPreview('testDoc.pdf').should('exist');
         templateEditorPage.getPicInPreview().should('exist');
@@ -162,6 +159,47 @@ describe("Templates", () => {
         templateEditorPage.getToastr('File Deleted!').should('exist');
         mainPage.openTemplatesPage();
         templateEditorPage.savingTemplateByLeavingPage();
+
+    });
+
+    it("Добавление кастомных шорткатов и проверка их отображения в темплейтах", () => {
+
+        cy.login('testId');
+        cy.visit('https://emails-dev.alpha-pram.com/templates/');
+        templatesPage.addNewTemplate();
+        templateEditorPage.createTemplate('Shortcut test', 'Custom1');
+        templatesPage.editTemplate('Custom1');
+        templateEditorPage.unwarpHeader();
+        templateEditorPage.unwarpFooter();
+        templateEditorPage.addShortcut('Contact Us', 'Contact Us 0');
+        templateEditorPage.addShortcut('Amazon Order Link', 'Amazon Order 0');
+        templateEditorPage.addShortcut('Feedback Link', 'Leave your feedback 0');
+        templateEditorPage.savingEditedHeader();
+        templateEditorPage.openPreview();
+        templateEditorPage.getShortcutInPreview('Contact Us 0').should('exist');
+        templateEditorPage.getShortcutInPreview('Amazon Order 0').should('exist');
+        templateEditorPage.getShortcutInPreview('Leave your feedback 0').should('exist');
+        templateEditorPage.closePreview();
+        templateEditorPage.selectTemplate('Custom');
+        templateEditorPage.savingTemplateByLeavingPage();
+        templateEditorPage.openPreview();
+        templateEditorPage.getShortcutInPreview('Contact Us 1').should('exist');
+        templateEditorPage.getShortcutInPreview('Amazon Order 1').should('exist');
+        templateEditorPage.getShortcutInPreview('Leave your feedback 1').should('exist');
+        templateEditorPage.closePreview();
+        templateEditorPage.removeHeader('Custom1');
+        templateEditorPage.getToastr('Failed! header not deleted').should('exist');
+        templateEditorPage.removeFooter('Custom1');
+        templateEditorPage.getToastr('Failed! footer not deleted').should('exist');
+        templateEditorPage.editTemplateName('Custom0');
+        templateEditorPage.editHeaderName('Custom0');
+        templateEditorPage.editFooterName('Custom0');
+        templateEditorPage.getTemplateSelector().should('contain', 'Custom0');
+        templateEditorPage.getHeaderSelect().should('contain', 'Custom0');
+        templateEditorPage.getFooterSelect().should('contain', 'Custom0');
+        templateEditorPage.editTextInTemplate('Edited text');
+        templateEditorPage.saveTemplateAsCopy('Save');
+        //потом нужно сохранить как копию сохраняя изменения
 
     });
 
