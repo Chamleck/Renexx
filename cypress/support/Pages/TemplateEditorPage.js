@@ -435,9 +435,9 @@ class TemplateEditorPage extends BasePage {
         cy.log(`**Pushing "Create copy" Btn for header**`);
         this.getHeaderCreateCopyBtn().click();
         cy.log(`**Pushing "OK" Btn**`);
-        this.getOkBtn().click();
+        this.getOkBtn().last().click();
         cy.log(`**Pushing "OK" Btn**`);
-        this.getOkBtn().click();
+        this.getOkBtn().first().click();
         }
         else {
             cy.log(`**All saved**`)
@@ -712,7 +712,7 @@ class TemplateEditorPage extends BasePage {
         this.getOkBtn().click();
 
         cy.log(`**Adding ${titleName} to title field**`);
-        this.getTitle().type(titleName);
+        this.getTitle().clear().type(titleName);
 
         cy.log(`**Pushing ok button*`);
         this.getOkBtn().click();
