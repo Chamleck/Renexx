@@ -199,8 +199,19 @@ describe("Templates", () => {
         templateEditorPage.getFooterSelect().should('contain', 'Custom0');
         templateEditorPage.editTextInTemplate('Edited text');
         templateEditorPage.saveTemplateAsCopy('Save');
-        //потом нужно сохранить как копию сохраняя изменения
-
+        templateEditorPage.getHeaderSelect().should('contain', 'Custom0:copy');
+        templateEditorPage.getFooterSelect().should('contain', 'Custom0:copy');
+        templateEditorPage.saveTemplate('Custom:copy');
+        templatesPage.removeTemplate('Custom1');
+        templatesPage.removeTemplate('Custom0');
+        templatesPage.removeTemplate('Custom:copy');
+        templatesPage.editTemplate('Template');
+        templateEditorPage.removeHeader('Custom1');
+        templateEditorPage.removeHeader('Custom0');
+        templateEditorPage.removeHeader('Custom0:copy');
+        templateEditorPage.removeFooter('Custom1');
+        templateEditorPage.removeFooter('Custom0');
+        templateEditorPage.removeFooter('Custom0:copy');
     });
 
 });
