@@ -1,63 +1,72 @@
-
-import campaignsPage from '../support/Pages/CampaignsPage';
-import campaignEditorPage from '../support/Pages/CampaignEditorPage';
+/// <reference types="cypress"/>
+import campaignsPage from './Pages/CampaignsPage';
+import campaignEditorPage from './Pages/CampaignEditorPage';
 import sessionData from '../fixtures/sessionData.json';
 import statistics from '../fixtures/mailStatisticsMock.json';
-import {faker} from '@faker-js/faker';
+import schedulingPage from './Pages/SchedulingPage.js';
+import {
+    faker
+} from '@faker-js/faker';
 
- 
 
-export function loginViaAPI(user){
+
+export function loginViaAPI(user) {
     //создаем объект который называем requestBody в этом объекте есть значение user: в котором хранится еще один объект с пустыми email: и password:
-    let requestBody = {email: "", password: ""};
-//тут обращаемся к значению email в созданной переменной requestBody и задаем значение из файла user
-     requestBody.email = user.email;
-     requestBody.password = user.password;
-    
-    //тут делаем реквест с методом POST, с эндпоинтом /api/users/login и с нашим объектом который хранится в переменной requestBody
-   
-    cy.request('POST', 'https://emails-dev-api.alpha-pram.com/user/auth/login', requestBody).then( response => {
+    let requestBody = {
+        email: "",
+        password: ""
+    };
+    //тут обращаемся к значению email в созданной переменной requestBody и задаем значение из файла user
+    requestBody.email = user.email;
+    requestBody.password = user.password;
 
-// тут создаем переменную token которая получит значение из тела ответа в котором у юзера есть еще токен
+    //тут делаем реквест с методом POST, с эндпоинтом /api/users/login и с нашим объектом который хранится в переменной requestBody
+
+    cy.request('POST', 'https://emails-dev-api.alpha-pram.com/user/auth/login', requestBody).then(response => {
+
+        // тут создаем переменную token которая получит значение из тела ответа в котором у юзера есть еще токен
         let token = response.body.accessToken;
-// сетим этот токен в localStorage
+        // сетим этот токен в localStorage
         window.localStorage.setItem('accessToken', token)
 
-// командой window обращаемся к localStorage, командой setItem в скобках указываем ключ и значение которое из джейсона преобразуем в строку
+        // командой window обращаемся к localStorage, командой setItem в скобках указываем ключ и значение которое из джейсона преобразуем в строку
         window.localStorage.setItem('storeId', sessionData.storeId);
     })
 };
 
-export function loginSessionViaAPI(id, username = 'admin@gmail.com', password = 'vI3iT581Lrh&'){
+export function loginSessionViaAPI(id, username = 'admin@gmail.com', password = 'vI3iT581Lrh&') {
     //создаем объект который называем requestBody в этом объекте есть значение user: в котором хранится еще один объект с пустыми email: и password:
-    let requestBody = {email: "", password: ""};
-//тут обращаемся к значению email в созданной переменной requestBody и задаем значение из аргумента функции
-     requestBody.email = username;
-     requestBody.password = password;
-    
+    let requestBody = {
+        email: "",
+        password: ""
+    };
+    //тут обращаемся к значению email в созданной переменной requestBody и задаем значение из аргумента функции
+    requestBody.email = username;
+    requestBody.password = password;
+
     //тут делаем реквест с методом POST, с эндпоинтом /api/users/login и с нашим объектом который хранится в переменной requestBody
     cy.session(id, () => {
-    cy.request('POST', 'https://emails-dev-api.alpha-pram.com/user/auth/login', requestBody).then( response => {
+        cy.request('POST', 'https://emails-dev-api.alpha-pram.com/user/auth/login', requestBody).then(response => {
 
-// тут создаем переменную token которая получит значение из тела ответа в котором у юзера есть еще токен
-        let token = response.body.accessToken;
-// сетим этот токен в localStorage
-        window.localStorage.setItem('accessToken', token)
+            // тут создаем переменную token которая получит значение из тела ответа в котором у юзера есть еще токен
+            let token = response.body.accessToken;
+            // сетим этот токен в localStorage
+            window.localStorage.setItem('accessToken', token)
 
-// командой window обращаемся к localStorage, командой setItem в скобках указываем ключ и значение которое из джейсона преобразуем в строку
-        window.localStorage.setItem('storeId', sessionData.storeId);
-    }), {
-    //вмикаэмо налаштування щоб кеш зберігався поміж сесіями
-    cacheAcrossSpecs: true,    
-    }
-  })
+            // командой window обращаемся к localStorage, командой setItem в скобках указываем ключ и значение которое из джейсона преобразуем в строку
+            window.localStorage.setItem('storeId', sessionData.storeId);
+        }), {
+            //вмикаэмо налаштування щоб кеш зберігався поміж сесіями
+            cacheAcrossSpecs: true,
+        }
+    })
 };
 
 
 
- export function login() {
+export function login() {
 
-        cy.session( () => {
+    cy.session(() => {
 
         cy.visit('/');
 
@@ -66,29 +75,29 @@ export function loginSessionViaAPI(id, username = 'admin@gmail.com', password = 
         cy.get('[type="password"]').type('vI3iT581Lrh&vI3iT581Lrh&');
 
         cy.get('span:contains(" LOG IN ")').click().wait(3000)
-        })
-    
+    })
+
 };
 
-export function createCampaign(campaignName,template,description,email){
+export function createCampaign(campaignName, template, description, email) {
 
-    campaignsPage.submitPopUpForm(campaignName,template);
+    campaignsPage.submitPopUpForm(campaignName, template);
 
-        campaignEditorPage.submitCampaignCreationForm(description,email);
+    campaignEditorPage.submitCampaignCreationForm(description, email);
 
-        campaignsPage.getPopUpMessage()
+    campaignsPage.getPopUpMessage()
         .should('contain', "Campaign created");
 
-        campaignsPage.getCampaignNameHolder('Test')
-        .should('contain', "Test" );
+    campaignsPage.getCampaignNameHolder('Test')
+        .should('contain', "Test");
 
 };
 
-export function removeCampaign(campaignName){
+export function removeCampaign(campaignName) {
 
-        campaignsPage.removeCampaign(campaignName);
+    campaignsPage.removeCampaign(campaignName);
 
-        campaignsPage.getPopUpMessage().should('contain', "Campaign deleted");
+    campaignsPage.getPopUpMessage().should('contain', "Campaign deleted");
 };
 
 // export function createMock() {
@@ -104,7 +113,7 @@ export function mockStatistics(data) {
 
     cy.intercept('GET', '**/mail-statistics', data);
     cy.reload();
-    
+
     // for (var statistic of statistics) {
 
     //     let number = faker.datatype.number(9)
@@ -127,17 +136,17 @@ export function mockStatistics(data) {
     })*/
 };
 
-export function changeValues () {
-//повертає в statistics результат перебирання за допомогою команди .map
-//тобто підставляє в item.value (ітем це кожен об'єкт в масиві в якому береться ключ .value)
-//потім повертє кожен саме змінений item; тому що ми його міняли, потім результат ціє
-//функції використовується в іншій як аргумент щоб підставити новий statistics в мок
-        return  statistics.map(item => {
+export function changeValues() {
+    //повертає в statistics результат перебирання за допомогою команди .map
+    //тобто підставляє в item.value (ітем це кожен об'єкт в масиві в якому береться ключ .value)
+    //потім повертє кожен саме змінений item; тому що ми його міняли, потім результат ціє
+    //функції використовується в іншій як аргумент щоб підставити новий statistics в мок
+    return statistics.map(item => {
 
         const randomNumer = faker.datatype.number(9);
 
         item.value = randomNumer;
-    
+
         return item;
     })
 
@@ -145,13 +154,68 @@ export function changeValues () {
 
 export function mockSchedulingTable(data) {
 
-cy.intercept('GET', '**/scheduling/orders?page=1&limit=20', data);
+    cy.intercept('GET', '**/scheduling/orders?page=1&limit=20', data);
 
-cy.reload();
+    cy.reload();
 
 };
 
+export function filterOrders(body, key, data) {
+
+    const foundObjects = body.data.filter(obj => obj[key] === data)
+    return foundObjects;
+};
+
+export function getFormattedDate(date) {
+    const options = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    };
+    return new Date(date).toLocaleDateString("fr-CA", options).replace("/", "-");
+};
+
+export function filterDates(data, value, value1, key) {
+    // убираем точки в дате как первый этап приведения ее к формату даты который получаем в теле ответа
+    let parts = value.split('.');
+    let parts1 = value1.split('.');
+    // склеиваем этот массив из отдельных чисел разварачивая его и добавляеем тире 
+    const transformedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    const transformedDate1 = `${parts1[2]}-${parts1[1]}-${parts1[0]}`;
 
 
+    // obj[key].slice(0, 10) делаем слайс оригинальной даты с которой сравниваем чтоб вырезать часть строки с информацией о часовом поясе,минутах и секундах
+    const foundObjects = data.filter(obj => obj[key].slice(0, 10) >= transformedDate && obj[key].slice(0, 10) <= transformedDate1)
 
+    return JSON.stringify(foundObjects);
+};
 
+export function schedulingRequest() {
+    cy.request('GET', '**/scheduling/orders').then(request => {
+        let data = request.response.body.data;
+        return data;
+    });
+};
+
+export function invokeText(i) {
+    return schedulingPage.getOrderDateColumn(i).invoke('text').then(data => {
+        const text = data.slice(0, 11);
+        return text;
+    });
+}
+
+export function checkData(count, value, value1) {
+    let parts = value.split('.');
+    let parts1 = value1.split('.');
+    const transformedDate = `${parts[1]}/${parts[0]}/${parts[2]}`;
+    const transformedDate1 = `${parts1[1]}/${parts1[0]}/${parts1[2]}`;
+    for (let i = 0; i < count; i++) {
+        cy.log(i);
+        invokeText(i).then(text=>{
+        cy.log(text);
+        cy.log(transformedDate);
+        cy.log(transformedDate1);
+        schedulingPage.getOrderDateColumn(i).should('contain', transformedDate >= text && transformedDate1 <= text);
+    })
+    }
+};

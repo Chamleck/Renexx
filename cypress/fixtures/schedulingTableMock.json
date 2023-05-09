@@ -1,7 +1,7 @@
 {
-    "total": 11,
+    "total": 31,
     "currentPage": 1,
-    "lastPage": 3,
+    "lastPage": 2,
     "data": [
         {
             "orderId": "111-3262999-0163439",
@@ -72,12 +72,12 @@
                 "TV462047_113130CHILD2"
             ],
             "FBA": "AFN",
-            "dateToSend": "2023-01-09T14:22:05.670Z",
+            "dateToSend": "2023-04-17T09:43:27.543Z",
             "status": "Delivery",
             "email": "pruteniok@gmail.com",
-            "template": null,
+            "template": "Custom",
             "campaign": "1",
-            "sentAt": null
+            "sentAt": "2023-04-17T09:48:03.15"
         },
         {
             "orderId": "111-8452468-8253056",
@@ -211,6 +211,45 @@
             "template": null,
             "campaign": "1",
             "sentAt": null
-         }
+         },
+         {
+            "orderId": "112-3840392-1164204",
+            "orderDate": "2023-04-17T00:53:30.000Z",
+            "deliveryDate": "2022-08-11T12:04:26.000Z",
+            "importedDate": "2023-04-17T00:53:30.000Z",
+            "itemsPurchased": 1,
+            "earliestShipDate": "2022-08-12T06:59:59.000Z",
+            "latestShipDate": "2022-08-12T06:59:59.000Z",
+            "SKU": [
+                "ORG8358475CHILD1"
+            ],
+            "FBA": "AFN",
+            "dateToSend": null,
+            "status": null,
+            "email": null,
+            "template": null,
+            "campaign": null,
+            "sentAt": null
+        },
+        {
+            "orderId": "113-1578862-1425009",
+            "orderDate": "2023-04-17T00:53:30.000Z",
+            "deliveryDate": "2022-08-11T12:15:38.000Z",
+            "importedDate": "2023-04-17T00:53:30.000Z",
+            "itemsPurchased": 1,
+            "earliestShipDate": "2022-08-12T06:59:59.000Z",
+            "latestShipDate": "2022-08-12T06:59:59.000Z",
+            "SKU": [
+                "EJD10833CHILD2"
+            ],
+            "FBA": "AFN",
+            "dateToSend": null,
+            "status": null,
+            "email": null,
+            "template": null,
+            "campaign": null,
+            "sentAt": null
+        }
+        
    ]
 }

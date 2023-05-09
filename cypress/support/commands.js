@@ -59,11 +59,23 @@ Cypress.Commands.add('setId',(value) =>{
  id = value
  //повертаємо id
  return id
-})
+});
 //команда щоб дістати id просто повертає id який був наданий в попередній команді
 Cypress.Commands.add('getId',() =>{
  return id
-})
+});
+
+let data
+
+Cypress.Commands.add('setData',(value) =>{
+ data = value
+ //повертаємо id
+ return data
+});
+
+Cypress.Commands.add('getData',() =>{
+ return data
+});
 
 
 
