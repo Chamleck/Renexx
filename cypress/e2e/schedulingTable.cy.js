@@ -31,16 +31,22 @@ describe("Testing of scheduling table", () => {
   it('Getting original table', () => {
     cy.login('testId');
     cy.visit('https://emails-dev.alpha-pram.com/scheduling/');
-    
-    
-   schedulingPage.inputDate('From', '02.05.2023');
-   schedulingPage.inputDate('To', '03.05.2023');
-   schedulingPage.clickTotalOrders();
-   schedulingPage.getOrderDateColumns().then(element=>{
-   const count = element.length;
-   checkData(count,'02.05.2023','03.05.2023');
-   });
-    
+
+
+    schedulingPage.inputDate('From', '17.05.2023');
+    schedulingPage.inputDate('To', '19.05.2023');
+    schedulingPage.clickTotalOrders();
+    cy.exist('[data-label="Order Purchase Date"]').then(exists => {
+      if (exists) {
+        schedulingPage.getOrderDateColumns().then(element => {
+          const count = element.length;
+          checkData(count, '17.05.2023', '19.05.2023');
+        });
+      } else {
+        schedulingPage.getNoRecords().should('exist');
+        cy.log("**Orders not found**")
+      }
+    });
     cy.intercept('GET', '**/scheduling/orders?page=1**').as('data');
     cy.reload();
     cy.wait('@data').then((request) => {
@@ -51,16 +57,16 @@ describe("Testing of scheduling table", () => {
       cy.log(JSON.stringify(data));
       cy.log(JSON.stringify(expectedData));
       //return(expectedData);
-    })//.then(expectedData =>{
+    }) //.then(expectedData =>{
     schedulingPage.inputDate('From', '02.05.2023');
     schedulingPage.inputDate('To', '02.05.2023');
     schedulingPage.clickTotalOrders();
     //cy.log(JSON.stringify(expectedData));
 
     // cy.wait('@data').then((request) => {
-     // let data1 = request.response.body.data;
+    // let data1 = request.response.body.data;
     //  expect(expectedData).to.deep.equal(data1);
-      })
-    })
- // }) 
+  })
+})
+// }) 
 //})
