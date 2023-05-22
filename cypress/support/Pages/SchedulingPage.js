@@ -8,6 +8,10 @@ class SchedulingPage extends BasePage {
         return cy.get('[data-label="FBA?"]');
     }
 
+    getNoRecords(){
+        return cy.get('div:contains("No records")');
+    }
+
     getRow(orderNumber){
         return cy.get(`tr:contains(${orderNumber})`);
     }
@@ -19,6 +23,10 @@ class SchedulingPage extends BasePage {
     getOrderDateColumn(i){
         return cy.get('[data-label="Order Purchase Date"]').eq(i)
         .find(`span`);
+    }
+
+    getOrderDateInput(i){
+        return cy.get('td[data-label="Order Purchase Date"]>div>p>span').eq(i);
     }
 
     getOrderDateColumns(){

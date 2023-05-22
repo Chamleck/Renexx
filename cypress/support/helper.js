@@ -199,23 +199,31 @@ export function schedulingRequest() {
 
 export function invokeText(i) {
     return schedulingPage.getOrderDateColumn(i).invoke('text').then(data => {
-        const text = data.slice(0, 11);
-        return text;
-    });
-}
+        const originalDate = data.slice(1, 11);
+        const parts = originalDate.split('/');
+        const transformedDate = `${parts[1]}.${parts[0]}.${parts[2]}`;
 
-export function checkData(count, value, value1) {
-    let parts = value.split('.');
-    let parts1 = value1.split('.');
-    const transformedDate = `${parts[1]}/${parts[0]}/${parts[2]}`;
-    const transformedDate1 = `${parts1[1]}/${parts1[0]}/${parts1[2]}`;
+        return transformedDate;
+    });
+};
+
+export function checkData(count, dateFrom, dateTo) {
     for (let i = 0; i < count; i++) {
         cy.log(i);
-        invokeText(i).then(text=>{
-        cy.log(text);
-        cy.log(transformedDate);
-        cy.log(transformedDate1);
-        schedulingPage.getOrderDateColumn(i).should('contain', transformedDate >= text && transformedDate1 <= text);
-    })
+        invokeText(i).then(text => {
+            if (dateTo >= text && dateFrom <= text) {
+                const parts = text.split('.');
+                let originalText = `${parts[1]}/${parts[0]}/${parts[2]}`;
+                cy.log(`**elemnt is expected**`);
+                cy.log(originalText);
+                cy.log(text);
+                cy.log(dateFrom);
+                cy.log(dateTo);
+                schedulingPage.getOrderDateInput(i).should('include.text', originalText);
+            } else {
+                cy.wrap(false, { timeout: 1 }).should('be.true', `Test failed for element ${i}`);
+                
+            }
+        })
     }
 };
