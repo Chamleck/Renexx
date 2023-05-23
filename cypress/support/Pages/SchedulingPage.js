@@ -15,30 +15,30 @@ class SchedulingPage extends BasePage {
     getRow(orderNumber){
         return cy.get(`tr:contains(${orderNumber})`);
     }
-    // From or To
-    getOrderDate(fieldType){
-        return cy.get('.columns').eq(2).find(`[placeholder="${fieldType}"]`);
+    // fieldType is => From or To, dateType is 2 = Order Date and so on
+    getDateInput(fieldType,dateType){
+        return cy.get('.columns').eq(`${dateType}`).find(`[placeholder="${fieldType}"]`);
     }
 
-    getOrderDateColumn(i){
-        return cy.get('[data-label="Order Purchase Date"]').eq(i)
+    getDateRow(i,columnType){
+        return cy.get(`[data-label="${columnType}"]`).eq(i)
         .find(`span`);
     }
 
-    getOrderDateInput(i){
-        return cy.get('td[data-label="Order Purchase Date"]>div>p>span').eq(i);
+    getColumnRowContent(columnType,i){
+        return cy.get(`td[data-label="${columnType}"]>div>p>span`).eq(i);
     }
 
-    getOrderDateColumns(){
-        return cy.get('[data-label="Order Purchase Date"]');
+    getRows(columnType){
+        return cy.get(`[data-label="${columnType}"]`);
     }
 
     getTotalOrders(){
         return cy.get('strong').last();
     }
 
-    inputDate(fieldType,date){
-        this.getOrderDate(fieldType).type(date);
+    inputDate(fieldType,date,dateType){
+        this.getDateInput(fieldType,dateType).type(date);
     }
 
     clickTotalOrders(){
