@@ -152,7 +152,7 @@ describe("Testing of scheduling table", () => {
       if (exists) {
         schedulingPage.getRows('Mail Status').then(element => {
           const count = element.length;
-          checkStatus(count, 'Mail Status', 'Pending');
+          checkStatus(count, 'Mail Status', 'Delivery');
           schedulingPage.clickCheckbox('Delivery');
         });
       } else {
@@ -168,7 +168,7 @@ describe("Testing of scheduling table", () => {
       if (exists) {
         schedulingPage.getRows('Mail Status').then(element => {
           const count = element.length;
-          checkStatus(count, 'Mail Status', 'Pending');
+          checkStatus(count, 'Mail Status', 'Open');
           schedulingPage.clickCheckbox('Open');
         });
       } else {
@@ -184,7 +184,7 @@ describe("Testing of scheduling table", () => {
       if (exists) {
         schedulingPage.getRows('Mail Status').then(element => {
           const count = element.length;
-          checkStatus(count, 'Mail Status', 'Pending');
+          checkStatus(count, 'Mail Status', 'Bounce');
           schedulingPage.clickCheckbox('Bounce');
         });
       } else {
@@ -200,7 +200,7 @@ describe("Testing of scheduling table", () => {
       if (exists) {
         schedulingPage.getRows('Mail Status').then(element => {
           const count = element.length;
-          checkStatus(count, 'Mail Status', 'Pending');
+          checkStatus(count, 'Mail Status', 'Complaint');
           schedulingPage.clickCheckbox('Complaint');
         });
       } else {
@@ -216,7 +216,7 @@ describe("Testing of scheduling table", () => {
       if (exists) {
         schedulingPage.getRows('Mail Status').then(element => {
           const count = element.length;
-          checkStatus(count, 'Mail Status', 'Pending');
+          checkStatus(count, 'Mail Status', 'Send');
           schedulingPage.clickCheckbox('Send');
         });
       } else {
