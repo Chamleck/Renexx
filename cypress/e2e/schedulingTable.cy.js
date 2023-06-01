@@ -4,7 +4,7 @@ import {
   mockSchedulingTable,
   filterDates,
   checkData,
-  invokeText
+  checkStatus
 } from '../support/helper.js';
 import mainPage from '../support/Pages/MainPage';
 import schedulingPage from '../support/Pages/SchedulingPage.js';
@@ -41,6 +41,8 @@ describe("Testing of scheduling table", () => {
         schedulingPage.getRows('Order Purchase Date').then(element => {
           const count = element.length;
           checkData(count, 'Order Purchase Date', '22.05.2023', '23.05.2023');
+          schedulingPage.clearInputDate('From', '2');
+          schedulingPage.clearInputDate('To', '2');
         });
       } else {
         schedulingPage.getNoRecords().should('exist');
@@ -127,5 +129,102 @@ describe("Testing of scheduling table", () => {
         cy.log("**Orders not found**")
       }
     });
+
+    schedulingPage.clickCheckbox('Pending');
+    cy.wait(500);
+    cy.exist('[data-label="Mail Status"]').then(exists => {
+      if (exists) {
+        schedulingPage.getRows('Mail Status').then(element => {
+          const count = element.length;
+          checkStatus(count, 'Mail Status', 'Pending');
+          schedulingPage.clickCheckbox('Pending');
+        });
+      } else {
+        schedulingPage.getNoRecords().should('exist');
+        schedulingPage.clickCheckbox('Pending');
+        cy.log("**Orders not found**")
+      }
+    });
+
+    schedulingPage.clickCheckbox('Delivery');
+    cy.wait(500);
+    cy.exist('[data-label="Mail Status"]').then(exists => {
+      if (exists) {
+        schedulingPage.getRows('Mail Status').then(element => {
+          const count = element.length;
+          checkStatus(count, 'Mail Status', 'Delivery');
+          schedulingPage.clickCheckbox('Delivery');
+        });
+      } else {
+        schedulingPage.getNoRecords().should('exist');
+        schedulingPage.clickCheckbox('Delivery');
+        cy.log("**Orders not found**")
+      }
+    });
+
+    schedulingPage.clickCheckbox('Open');
+    cy.wait(500);
+    cy.exist('[data-label="Mail Status"]').then(exists => {
+      if (exists) {
+        schedulingPage.getRows('Mail Status').then(element => {
+          const count = element.length;
+          checkStatus(count, 'Mail Status', 'Open');
+          schedulingPage.clickCheckbox('Open');
+        });
+      } else {
+        schedulingPage.getNoRecords().should('exist');
+        schedulingPage.clickCheckbox('Open');
+        cy.log("**Orders not found**")
+      }
+    });
+
+    schedulingPage.clickCheckbox('Bounce');
+    cy.wait(500);
+    cy.exist('[data-label="Mail Status"]').then(exists => {
+      if (exists) {
+        schedulingPage.getRows('Mail Status').then(element => {
+          const count = element.length;
+          checkStatus(count, 'Mail Status', 'Bounce');
+          schedulingPage.clickCheckbox('Bounce');
+        });
+      } else {
+        schedulingPage.getNoRecords().should('exist');
+        schedulingPage.clickCheckbox('Bounce');
+        cy.log("**Orders not found**")
+      }
+    });
+
+    schedulingPage.clickCheckbox('Complaint');
+    cy.wait(500);
+    cy.exist('[data-label="Mail Status"]').then(exists => {
+      if (exists) {
+        schedulingPage.getRows('Mail Status').then(element => {
+          const count = element.length;
+          checkStatus(count, 'Mail Status', 'Complaint');
+          schedulingPage.clickCheckbox('Complaint');
+        });
+      } else {
+        schedulingPage.getNoRecords().should('exist');
+        schedulingPage.clickCheckbox('Complaint');
+        cy.log("**Orders not found**")
+      }
+    });
+
+    schedulingPage.clickCheckbox('Send');
+    cy.wait(500);
+    cy.exist('[data-label="Mail Status"]').then(exists => {
+      if (exists) {
+        schedulingPage.getRows('Mail Status').then(element => {
+          const count = element.length;
+          checkStatus(count, 'Mail Status', 'Send');
+          schedulingPage.clickCheckbox('Send');
+        });
+      } else {
+        schedulingPage.getNoRecords().should('exist');
+        schedulingPage.clickCheckbox('Send');
+        cy.log("**Orders not found**")
+      }
+    });
+
   });
 });

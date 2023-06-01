@@ -33,12 +33,24 @@ class SchedulingPage extends BasePage {
         return cy.get(`[data-label="${columnType}"]`);
     }
 
+    getCheckBox(checkType){
+        return cy.get(`[value="${checkType}"]`);
+    }
+
     getTotalOrders(){
         return cy.get('strong').last();
     }
 
+    clickCheckbox(checkType){
+        this.getCheckBox(checkType).click({force:true});
+    }
+
     inputDate(fieldType,date,dateType){
         this.getDateInput(fieldType,dateType).type(date);
+    }
+
+    clearInputDate(fieldType, dateType){
+        this.getDateInput(fieldType, dateType).clear();
     }
 
     clickTotalOrders(){

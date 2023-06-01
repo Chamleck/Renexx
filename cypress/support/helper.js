@@ -198,7 +198,7 @@ export function schedulingRequest() {
 };
 
 export function invokeText(i, columnType) {
-    return schedulingPage.getDateRow(i,columnType).invoke('text').then(data => {
+    return schedulingPage.getDateRow(i, columnType).invoke('text').then(data => {
         const originalDate = data.slice(1, 11);
         const parts = originalDate.split('/');
         const transformedDate = `${parts[1]}.${parts[0]}.${parts[2]}`;
@@ -221,9 +221,19 @@ export function checkData(count, columnType, dateFrom, dateTo) {
                 cy.log(dateTo);
                 schedulingPage.getColumnRowContent(columnType, i).should('include.text', originalText);
             } else {
-                cy.wrap(false, { timeout: 1 }).should('be.true', `Test failed for element ${i}`);
-                
+                cy.wrap(false, {
+                    timeout: 1
+                }).should('be.true', `Test failed for element ${i}`);
+
             }
         })
     }
 };
+
+export function checkStatus(count, columnType, status) {
+    for (let i = 0; i < count; i++) {
+
+        schedulingPage.getColumnRowContent(columnType, i).should('include.text', status);
+
+    }
+}
