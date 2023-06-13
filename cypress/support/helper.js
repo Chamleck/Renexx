@@ -202,7 +202,6 @@ export function invokeText(i, columnType) {
         const originalDate = data.slice(1, 11);
         const parts = originalDate.split('/');
         const transformedDate = `${parts[1]}.${parts[0]}.${parts[2]}`;
-
         return transformedDate;
     });
 };

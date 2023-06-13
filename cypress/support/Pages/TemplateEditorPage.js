@@ -271,7 +271,7 @@ class TemplateEditorPage extends BasePage {
     }
 
     getDeleteBtn() {
-        return cy.get('span:contains("Delete")')
+        return cy.get('span:contains("Delete")');
     }
 
     getToastr(text) {
@@ -280,7 +280,7 @@ class TemplateEditorPage extends BasePage {
 
     getSelectLastHeaderFooter() {
         return cy.get('.modal-content')
-            .find('select')
+            .find('select');
     }
 
     getHeaderDeleteBtn() {
@@ -292,7 +292,7 @@ class TemplateEditorPage extends BasePage {
     }
     // 0 is pic, 1 is doc
     getDeleteFileIcon(picOrDoc) {
-        return cy.get('.mdi-delete-forever').eq(`${picOrDoc}`)
+        return cy.get('.mdi-delete-forever').eq(`${picOrDoc}`);
     }
 
     // 0 is left , 1 is center , 2 is right, 3 is justify
@@ -358,7 +358,7 @@ class TemplateEditorPage extends BasePage {
     }
 
     getCustomLink() {
-        return cy.get('[href="google.com"]')
+        return cy.get('[href="google.com"]');
     }
 
     getPreviewBtn() {
@@ -440,7 +440,7 @@ class TemplateEditorPage extends BasePage {
         this.getOkBtn().first().click();
         }
         else {
-            cy.log(`**All saved**`)
+            cy.log(`**All saved**`);
         }
          })
     // })
@@ -481,30 +481,30 @@ class TemplateEditorPage extends BasePage {
     }
     
     selectTemplate(template){
-        cy.log(`**Selecting ${template} template*`);
+        cy.log(`**Selecting ${template} template**`);
         this.getTemplateSelector().select(template);
     }
 
     selectHeader(header){
-        cy.log(`**Selecting ${header} header*`);
+        cy.log(`**Selecting ${header} header**`);
         this.getHeaderSelect().select(header);
     }
 
     removeHeader(header){
-        cy.log(`**Selecting ${header} header*`);
+        cy.log(`**Selecting ${header} header**`);
         this.getHeaderSelect().select(header);
         cy.log(`**Pushing delete pencil**`);
         this.getHeaderDeleteBtn().click();
     }
 
     selectFooter(footer){
-        cy.log(`**Selecting ${footer} header*`);
+        cy.log(`**Selecting ${footer} header**`);
         this.getFooterSelect().select(footer);
     }
 
     removeFooter(footer){
-        cy.log(`**Selecting ${footer} header*`);
-        this.getFooterSelect().select(footer)
+        cy.log(`**Selecting ${footer} header**`);
+        this.getFooterSelect().select(footer);
         cy.log(`**Pushing delete pencil**`);
         this.getFooterDeleteBtn().click();
     }
@@ -673,7 +673,7 @@ class TemplateEditorPage extends BasePage {
         cy.log(`**Adding ${titleName} to header title field**`);
         this.getTitle().type(titleName);
 
-        cy.log(`**Pushing ok button*`);
+        cy.log(`**Pushing ok button**`);
         this.getOkBtn().click();
 
         cy.log('**Clicking on body source btn**');
@@ -700,7 +700,7 @@ class TemplateEditorPage extends BasePage {
         cy.log(`**Adding ${titleName} to footer title field**`);
         this.getTitle().type(titleName);
 
-        cy.log(`**Pushing ok button*`);
+        cy.log(`**Pushing ok button**`);
         this.getOkBtn().click();
     }
 
@@ -719,7 +719,7 @@ class TemplateEditorPage extends BasePage {
     }
 
     openPreview() {
-        cy.log(`**Clicking preview btn*`);
+        cy.log(`**Clicking preview btn**`);
         this.getPreviewBtn().click()
     }
 
