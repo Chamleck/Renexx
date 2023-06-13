@@ -42,18 +42,22 @@ class SchedulingPage extends BasePage {
     }
 
     clickCheckbox(checkType){
+        cy.log(`**Checking ${checkType}**`);
         this.getCheckBox(checkType).click({force:true});
     }
 
     inputDate(fieldType,date,dateType){
+        cy.log(`**Inputing ${date} in ${fieldType} field for date field with index ${dateType}**`);
         this.getDateInput(fieldType,dateType).type(date);
     }
 
     clearInputDate(fieldType, dateType){
+        cy.log(`**Clearing input date in ${fieldType} field for date field with index ${dateType}**`);
         this.getDateInput(fieldType, dateType).clear();
     }
 
     clickTotalOrders(){
+        cy.log(`**Clicking total orders writing**`);
         this.getTotalOrders().click({force:true});
     }
 
