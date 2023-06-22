@@ -1,8 +1,9 @@
 /// <reference types="cypress"/>
 
 import {
+  invokeOrderSkuNum,
   mockSchedulingTable,
-  filterDates,
+  checkSearch,
   checkData,
   checkStatus
 } from '../support/helper.js';
@@ -27,7 +28,7 @@ describe("Testing of scheduling table", () => {
       schedulingPage.getRow('112-7243026-8181036').should('have.class', 'has-background-danger');
 
     })
-  })
+  });
 
   describe("Filters Test", () => {
     it('Original table filters testing', () => {
@@ -78,7 +79,7 @@ describe("Testing of scheduling table", () => {
       schedulingPage.inputDate('To', '01.06.2023', '4');
       schedulingPage.clickTotalOrders();
       cy.wait(500);
-      cy.exist('[data-label="Order Imported Date"]').then(exists => {
+      cy.exist('[data-label="Order Imported Date"] ').then(exists => {
         if (exists) {
           schedulingPage.getRows('Order Imported Date').then(element => {
             const count = element.length;
@@ -151,6 +152,46 @@ describe("Testing of scheduling table", () => {
           cy.log("**Orders not found**")
           schedulingPage.clearInputDate('From', '7');
           schedulingPage.clearInputDate('To', '7');
+        }
+      });
+    });
+
+    it('Checkbox filters testing', () => {
+
+      cy.login('testId');
+      cy.visit('https://emails-dev.alpha-pram.com/scheduling/');
+      cy.get('[data-label="Order #"]', {
+        timeout: 2000
+      });
+      schedulingPage.clickCheckbox('AFN');
+      cy.wait(500);
+      cy.exist('[data-label="FBA?"]').then(exists => {
+        if (exists) {
+          schedulingPage.getRows('FBA?').then(element => {
+            const count = element.length;
+            checkStatus(count, 'FBA?', 'AFN');
+            schedulingPage.clickCheckbox('AFN');
+          });
+        } else {
+          schedulingPage.getNoRecords().should('exist');
+          schedulingPage.clickCheckbox('AFN');
+          cy.log("**Orders not found**")
+        }
+      });
+
+      schedulingPage.clickCheckbox('MFN');
+      cy.wait(500);
+      cy.exist('[data-label="FBA?"]').then(exists => {
+        if (exists) {
+          schedulingPage.getRows('FBA?').then(element => {
+            const count = element.length;
+            checkStatus(count, 'FBA?', 'MFN');
+            schedulingPage.clickCheckbox('MFN');
+          });
+        } else {
+          schedulingPage.getNoRecords().should('exist');
+          schedulingPage.clickCheckbox('MFN');
+          cy.log("**Orders not found**")
         }
       });
 
@@ -249,6 +290,127 @@ describe("Testing of scheduling table", () => {
           cy.log("**Orders not found**")
         }
       });
+    });
+
+    it.only('Testing search by order number and Sku number', () => {
+
+      cy.login('testId');
+      cy.visit('https://emails-dev.alpha-pram.com/scheduling/');
+      cy.get('[data-label="Order #"]', {
+        timeout: 2000
+      });
+      cy.exist('[data-label="Order #"]').then(exists => {
+        if (exists) {
+          invokeOrderSkuNum(0, 'Order #').then(text => {
+            const orderNum = text.trim();
+            schedulingPage.inputSearchData(orderNum);
+            cy.intercept('GET', '**/scheduling/orders?page=1&limit=20&orderId=*').as('request')
+            schedulingPage.clickTotalOrders();
+            cy.wait('@request')
+            schedulingPage.getRows('Order #').then(element => {
+              const count = element.length;
+              cy.log(count);
+              checkSearch(count, 'Order #', orderNum);
+              schedulingPage.clearSearchInput();
+              cy.intercept('GET', '**/scheduling/orders?page=1&limit=20').as('request')
+              schedulingPage.clickTotalOrders();
+              cy.wait('@request');
+            });
+          });
+        } else {
+          schedulingPage.getNoRecords().should('exist');
+          schedulingPage.clearSearchInput();
+          cy.log("**Orders not found**");
+          cy.intercept('GET', '**/scheduling/orders?page=1&limit=20').as('request')
+          schedulingPage.clickTotalOrders();
+          cy.wait('@request');
+        }
+      });
+
+      cy.get('[data-label="SKUs"]').then(exists => {
+        if (exists) {
+          invokeOrderSkuNum(0, 'SKUs').then(text => {
+            const skuNum = text.trim();
+            schedulingPage.selectFilterType('SKUs');
+            schedulingPage.inputSearchData(skuNum);
+            cy.intercept('GET', `**/scheduling/orders?page=1&limit=20&skus=${skuNum}`).as('request');
+            schedulingPage.clickTotalOrders();
+            cy.wait('@request');
+            cy.wait(500);
+            schedulingPage.getRows('SKUs').then(element => {
+              const count = element.length;
+              cy.log(count);
+              checkSearch(count, 'SKUs', skuNum);
+              schedulingPage.clearSearchInput();
+            });
+          });
+        } else {
+          schedulingPage.getNoRecords().should('exist');
+          schedulingPage.clearSearchInput();
+          cy.log("**Orders not found**");
+        }
+      });
+    });
+
+    it('Testing combination of filters', () => {
+      cy.login('testId');
+      cy.visit('https://emails-dev.alpha-pram.com/scheduling/');
+
+      schedulingPage.inputDate('From', '01.06.2023', '2');
+      schedulingPage.inputDate('To', '01.06.2023', '2');
+      schedulingPage.inputDate('From', '02.06.2023', '4');
+      schedulingPage.inputDate('To', '02.06.2023', '4');
+      schedulingPage.clickCheckbox('Delivery');
+      schedulingPage.clickCheckbox('Open');
+      schedulingPage.clickTotalOrders();
+      cy.wait(500);
+      cy.exist('[data-label="Order Purchase Date"]').then(exists => {
+        if (exists) {
+          schedulingPage.getRows('Order Purchase Date').then(element => {
+            const count = element.length;
+            checkData(count, 'Order Purchase Date', '01.06.2023', '01.06.2023');
+          });
+        } else {
+          schedulingPage.getNoRecords().should('exist');
+          cy.log("**Orders not found**")
+        }
+      })
+
+      cy.exist('[data-label="Order Imported Date"]').then(exists => {
+        if (exists) {
+          schedulingPage.getRows('Order Imported Date').then(element => {
+            const count = element.length;
+            checkData(count, 'Order Imported Date', '02.06.2023', '02.06.2023');
+          });
+        } else {
+          schedulingPage.getNoRecords().should('exist');
+          cy.log("**Orders not found**")
+        }
+      });
+
+      cy.exist('[data-label="Mail Status"]').then(exists => {
+        if (exists) {
+          schedulingPage.getRows('Mail Status').then(element => {
+            const count = element.length;
+            checkStatus(count, 'Mail Status', 'Delivery', 'Open');
+            schedulingPage.clearInputDate('From', '2');
+            schedulingPage.clearInputDate('To', '2');
+            schedulingPage.clearInputDate('From', '4');
+            schedulingPage.clearInputDate('To', '4');
+            schedulingPage.clickCheckbox('Delivery');
+            schedulingPage.clickCheckbox('Open');
+          });
+        } else {
+          schedulingPage.getNoRecords().should('exist');
+          schedulingPage.clearInputDate('From', '2');
+          schedulingPage.clearInputDate('To', '2');
+          schedulingPage.clearInputDate('From', '4');
+          schedulingPage.clearInputDate('To', '4');
+          schedulingPage.clickCheckbox('Delivery');
+          schedulingPage.clickCheckbox('Open');
+          cy.log("**Orders not found**")
+        }
+      });
     })
-  });
+  })
 });

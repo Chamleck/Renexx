@@ -432,10 +432,10 @@ class TemplateEditorPage extends BasePage {
         if (exists) {
         cy.log(`**Pushing "Create copy" Btn for footer**`);
         this.getFooterCreateCopyBtn().click();
-        cy.log(`**Pushing "Create copy" Btn for header**`);
-        this.getHeaderCreateCopyBtn().click();
         cy.log(`**Pushing "OK" Btn**`);
         this.getOkBtn().last().click();
+        cy.log(`**Pushing "Create copy" Btn for header**`);
+        this.getHeaderCreateCopyBtn().click();
         cy.log(`**Pushing "OK" Btn**`);
         this.getOkBtn().first().click();
         }

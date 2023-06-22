@@ -198,7 +198,7 @@ export function schedulingRequest() {
 };
 
 export function invokeText(i, columnType) {
-    return schedulingPage.getDateRow(i, columnType).invoke('text').then(data => {
+    return schedulingPage.getDataRow(i, columnType).invoke('text').then(data => {
         const originalDate = data.slice(1, 11);
         const parts = originalDate.split('/');
         const transformedDate = `${parts[1]}.${parts[0]}.${parts[2]}`;
@@ -229,10 +229,31 @@ export function checkData(count, columnType, dateFrom, dateTo) {
     }
 };
 
-export function checkStatus(count, columnType, status) {
+export function checkStatus(count, columnType, status, status1, status2, status3) {
     for (let i = 0; i < count; i++) {
 
-        schedulingPage.getColumnRowContent(columnType, i).should('include.text', status);
+        schedulingPage.getColumnRowContent(columnType, i).should('include.text', status||status1||status2||status3);
 
+    }
+};
+
+export function invokeOrderSkuNum(i, columnType) {
+    return schedulingPage.getDataRow(i, columnType).invoke('text').then(data => {
+        //використовую трім щоб прибрати пробіли
+        let orderSkuNum = data.trim();
+        //ставлю умову щоб повертало тільки ті значення які не порожні в іншому випадку я буду повертати результат цієї ж самої функції але аргументом передам ітератор збільшений
+        //на одиницю щоб вона шукала наступний елемент, якщо знову там не буде значення то все пійде по другому колу і так поки не знайдеться елемент 
+        if (orderSkuNum.length > 0) {
+            return orderSkuNum;
+        }else{
+           return invokeOrderSkuNum(i + 1,columnType);
+        }
+    });
+};
+
+export function checkSearch(count, columnType, orderNum) {
+    for (let i = 0; i < count; i++) {
+        
+        schedulingPage.getColumnRowContent(columnType, i).should('include.text', orderNum);
     }
 }
