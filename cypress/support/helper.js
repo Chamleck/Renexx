@@ -201,7 +201,7 @@ export function invokeText(i, columnType) {
     return schedulingPage.getDataRow(i, columnType).invoke('text').then(data => {
         const originalDate = data.slice(1, 11);
         const parts = originalDate.split('/');
-        const transformedDate = `${parts[1]}.${parts[0]}.${parts[2]}`;
+        const transformedDate = `${parts[0]}.${parts[1]}.${parts[2]}`;
         return transformedDate;
     });
 };
@@ -210,9 +210,12 @@ export function checkData(count, columnType, dateFrom, dateTo) {
     for (let i = 0; i < count; i++) {
         cy.log(i);
         invokeText(i, columnType).then(text => {
+            cy.log(text);
+            cy.log(dateFrom);
+            cy.log(dateTo);
             if (dateTo >= text && dateFrom <= text) {
                 const parts = text.split('.');
-                let originalText = `${parts[1]}/${parts[0]}/${parts[2]}`;
+                let originalText = `${parts[0]}/${parts[1]}/${parts[2]}`;
                 cy.log(`**elemnt is expected**`);
                 cy.log(originalText);
                 cy.log(text);
